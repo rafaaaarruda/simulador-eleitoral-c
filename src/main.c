@@ -1,6 +1,6 @@
 // Simulador Eleitoral em C
 // Projeto acadêmico desenvolvido em 2024.2
-// Versão revisada em 2026 para organização de portifólio 
+// Versão revisada em 2026 para organização de portfólio 
 // Mantém a proposta original, com correções pontuais de lógica e compatibilidade
 
 #include <stdio.h>
@@ -54,8 +54,8 @@ int main(){
                     printf("Opção inválida. Digite novamente: ");
                         scanf("%d", &opcao_menu);
                 }
-                system ("pause");
-                    system ("cls");
+                pausar();
+                    limpar_tela();
 
                 if (opcao_menu == 1){
                     if ( controle[0] == 1 ){
@@ -63,7 +63,7 @@ int main(){
                     } else {
                         printf("Digite a senha: ");
                         scanf("%d", &senha);
-                            system ("cls");
+                            limpar_tela();
 
                     while (senha != 1234){
                         printf("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
@@ -73,7 +73,7 @@ int main(){
                                         break;
                                     }
 
-                                    system ("cls");
+                                    limpar_tela();
                         }
 
                             if (senha == 1234){
@@ -114,8 +114,8 @@ int main(){
                             } // fim senha
 
                     } // fim controle
-                            system ("pause");
-                                system ("cls");
+                            pausar();
+                                limpar_tela();
                 } // fim if 1
 
                 if (opcao_menu == 2){
@@ -125,7 +125,7 @@ int main(){
                     } else if (numero_candidato[3] != 0){
                                 printf("Digite a senha: ");
                                     scanf("%d", &senha);
-                                        system ("cls");
+                                        limpar_tela();
 
                                 while (senha != 1234){
                                     printf("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
@@ -135,7 +135,7 @@ int main(){
                                                     break;
                                                 }
 
-                                                system ("cls");
+                                                limpar_tela();
 
                                     }
 
@@ -153,7 +153,7 @@ int main(){
                                                 scanf("%d", &num_eleitores);
                                         }
 
-                                        system ("pause");
+                                        pausar();
                                         limpar_tela();
 
                                     }
@@ -183,7 +183,7 @@ int main(){
                                                                     if (confirmar_voto == 1){
                                                                         cont1[1] += 1;
                                                                     }
-                                                                            system ("cls");
+                                                                            limpar_tela();
 
                                                     } else if ( voto == numero_candidato[0]){
                                                          printf("\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ", nome_candidato[0]);
@@ -192,7 +192,7 @@ int main(){
                                                                 if (confirmar_voto == 1){
                                                                     cont2[0] += 1;
                                                                 }
-                                                                        system ("cls");
+                                                                        limpar_tela();
 
                                                     } else if ( voto == numero_candidato[1]){
                                                          printf("\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ", nome_candidato[1]);
@@ -201,7 +201,7 @@ int main(){
                                                                 if (confirmar_voto == 1){
                                                                     cont2[1] += 1;
                                                                 }
-                                                                        system ("cls");
+                                                                        limpar_tela();
 
                                                     }else if ( voto == numero_candidato[2]){
                                                          printf("\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ", nome_candidato[2]);
@@ -210,7 +210,7 @@ int main(){
                                                                 if (confirmar_voto == 1){
                                                                     cont2[2] += 1;
                                                                 }
-                                                                        system ("cls");
+                                                                        limpar_tela();
 
                                                     }else if ( voto == numero_candidato[3]){
                                                          printf("\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ", nome_candidato[3]);
@@ -219,7 +219,7 @@ int main(){
                                                                 if (confirmar_voto == 1){
                                                                     cont2[3] += 1;
                                                                 }
-                                                                        system ("cls");
+                                                                        limpar_tela();
 
                                                     } else {
                                                          printf("\nVocê está votando Nulo. Para confirmar seu voto digite 1: ");
@@ -228,7 +228,7 @@ int main(){
                                                                 if (confirmar_voto == 1){
                                                                     cont1[0] += 1;
                                                                 }
-                                                                        system ("cls");
+                                                                        limpar_tela();
 
                                                     } // fim da votação
 
@@ -241,8 +241,8 @@ int main(){
 
                         } // fim do if (numero_candidato[3] != 0)
 
-                        system ("pause");
-                            system ("cls");
+                        pausar();
+                            limpar_tela();
 
                 } // fim do if (opcao_menu == 2)
 
@@ -255,7 +255,7 @@ int main(){
                                 do{
                                     printf("Digite a senha: ");
                                         scanf("%d", &senha);
-                                            system ("cls");
+                                            limpar_tela();
 
                                         while (senha != 1234){
                                             printf("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
@@ -265,7 +265,7 @@ int main(){
                                                             break;
                                                         }
 
-                                                    system ("cls");
+                                                    limpar_tela();
                                         }
 
                                         if (senha == 1234){
@@ -292,8 +292,8 @@ int main(){
 
                             } // fim do if (numero_candidato[3] != 0)
 
-                                system ("pause");
-                                    system ("cls");
+                                pausar();
+                                    limpar_tela();
 
                 } // fim do if (opcao_menu == 3)
 
@@ -308,7 +308,7 @@ int main(){
                             do{
                                 printf("Digite a senha: ");
                                     scanf("%d", &senha);
-                                        system ("cls");
+                                        limpar_tela();
 
                             while (senha != 1234){
                                 printf("Senha inválida. Digite novamente ou '0' para voltar ao menu: ");
@@ -318,7 +318,7 @@ int main(){
                                             break;
                                         }
 
-                                    system ("cls");
+                                    limpar_tela();
                             }
 
                                         if (senha == 1234){
@@ -358,7 +358,7 @@ int main(){
                                                         if ( maior_voto == segundo_maior_voto ){ //empatou 1° turno com - 200k eleitores
                                                             printf("\nNão houve vencedor. Ocorrerá desempate por meio da idade dos candidatos %s e %s. \n\n", nome_candidato[primeiro], nome_candidato[segundo]);
 
-                                                                system ("pause");
+                                                                pausar();
                                                                     limpar_tela();
 
                                                             printf("Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ", nome_candidato[primeiro]);
@@ -398,7 +398,7 @@ int main(){
                                                     } else if ( votos[primeiro] < 50.0 ) {
                                                         printf("\nNão houve vencedor no 1° turno. Ocorrerá 2° turno entre os candidatos %s e %s. \n\n", nome_candidato[primeiro], nome_candidato[segundo]);
 
-                                                        system ("pause");
+                                                        pausar();
                                                             limpar_tela();
 
                                                         // votação do segundo turno
@@ -430,7 +430,7 @@ int main(){
                                                                         if (confirmar_voto == 1){
                                                                             cont1[1] += 1;
                                                                         }
-                                                                                system ("cls");
+                                                                                limpar_tela();
 
                                                                     } else if ( voto == numero_candidato[primeiro] ){
                                                                         printf("\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ", nome_candidato[primeiro]);
@@ -440,7 +440,7 @@ int main(){
                                                                                 cont2[primeiro]++;
                                                                             }
 
-                                                                            system ("cls");
+                                                                            limpar_tela();
                                                                     } else if (voto == numero_candidato[segundo] ){
                                                                         printf("\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ", nome_candidato[segundo]);
                                                                             scanf("%d", &confirmar_voto);
@@ -449,7 +449,7 @@ int main(){
                                                                                 cont2[segundo]++;
                                                                             }
 
-                                                                            system ("cls");
+                                                                            limpar_tela();
                                                                     } else {
                                                                         printf("\nVocê está votando Nulo. Para confirmar seu voto digite 1: ");
                                                                             scanf("%d", &confirmar_voto);
@@ -458,7 +458,7 @@ int main(){
                                                                                 cont1[0] += 1;
                                                                             }
 
-                                                                            system ("cls");
+                                                                            limpar_tela();
 
                                                                     } //fim da votação
 
@@ -473,8 +473,8 @@ int main(){
                                                         } else if ( cont2[primeiro] == cont2[segundo] ){
                                                             printf("\nEmpate. Desempate ocorrerá entre os candidatos %s e %s no formato (dd/mm/aaaa). \n", nome_candidato[primeiro], nome_candidato[segundo]);
 
-                                                            system ("pause");
-                                                                system ("cls");
+                                                            pausar();
+                                                                limpar_tela();
 
                                                             printf("Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ", nome_candidato[primeiro]);
                                                                 scanf("%d/%d/%d", &dia[0], &mes[0], &ano[0]);
@@ -516,8 +516,8 @@ int main(){
                             printf("Ainda não foram cadastrados candidatos. \n\n");
                     } // fim do if (numero_candidato[3] != 0)
 
-                        system ("pause");
-                            system ("cls");
+                        pausar();
+                            limpar_tela();
 
                 } // fim do if (opcao_menu == 4)
 
