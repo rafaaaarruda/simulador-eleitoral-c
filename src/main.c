@@ -92,7 +92,7 @@ int main(){
                                                             }
                                                         }
                                                     } while (numero_valido == 1 );
-                                                    
+
                                                 printf("Digite o nome do %d° candidato(a): ", i + 1);
                                                     fgets(nome_candidato[i], 50, stdin);
                                                         nome_candidato[i][strcspn(nome_candidato[i], "\n")] = '\0';  // remove o '\n' ao final para não ficar pulando linha
@@ -132,13 +132,13 @@ int main(){
                                         printf("-------Qntd. de Eleitores-------\n");
                                         printf("[1] + de 200k\n");
                                         printf("[2] - de 200k\n");
-                                        printf("Digite uma opção: ");
-                                            scanf("%d", &num_eleitores);
 
+                                        num_eleitores = ler_inteiro("Digite uma opção: ");
 
-                                        while ( num_eleitores != 1 && num_eleitores != 2 ){
-                                            printf("Número de eleitores inválido. Digite novamente: ");
-                                                scanf("%d", &num_eleitores);
+                                        while (num_eleitores != 1 && num_eleitores != 2) {
+                                            num_eleitores = ler_inteiro(
+                                                "Número de eleitores inválido. Digite novamente: "
+                                            );
                                         }
 
                                         pausar();
@@ -152,12 +152,13 @@ int main(){
                                             printf("----------Primeiro turno----------\n");
                                             printf("[1] - Voto Branco\n");
                                             printf("[100] - Sair da votação\n");
-                                            printf("Digite o número do seu candidato(a) ou uma das opções acima: ");
-                                                scanf("%d", &voto);
+                                            
+                                            voto = ler_inteiro(
+                                                    "Digite o número do seu candidato(a) ou uma das opções acima: "
+                                            );
 
-                                                while ( voto < 0 ){
-                                                    printf("\nVoto inválido. Digite novamente: ");
-                                                        scanf("%d", &voto);
+                                                while (voto < 0) {
+                                                    voto = ler_inteiro("\nVoto inválido. Digite novamente: ");
                                                 }
 
                                                     if (voto == 100){
