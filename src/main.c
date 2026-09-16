@@ -46,13 +46,11 @@ int main(){
                     if ( controle[0] == 1 ){
                         printf("Já foi feito o cadastro de candidatos.\n\n");
                     } else {
-                        printf("Digite a senha: ");
-                        scanf("%d", &senha);
+                        senha = ler_inteiro("Digite a senha: ");
                             limpar_tela();
 
                     while (senha != 1234){
-                        printf("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
-                            scanf("%d", &senha);
+                        senha = ler_inteiro("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
 
                                     if ( senha == 0 ){
                                         break;
@@ -108,19 +106,17 @@ int main(){
                         printf("Votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
 
                     } else if (numero_candidato[3] != 0){
-                                printf("Digite a senha: ");
-                                    scanf("%d", &senha);
-                                        limpar_tela();
+                                senha = ler_inteiro("Digite a senha: ");
+                                    limpar_tela();
 
                                 while (senha != 1234){
-                                    printf("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
-                                        scanf("%d", &senha);
+                                    senha = ler_inteiro("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
 
-                                                if ( senha == 0 ){
-                                                    break;
-                                                }
+                                        if ( senha == 0 ){
+                                            break;
+                                        }
 
-                                                limpar_tela();
+                                        limpar_tela();
 
                                     }
 
@@ -238,19 +234,17 @@ int main(){
                                 printf("Ainda não foi feita a eleição.\n\n");
                             } else if (numero_candidato[3] != 0){
                                 do{
-                                    printf("Digite a senha: ");
-                                        scanf("%d", &senha);
-                                            limpar_tela();
+                                    senha = ler_inteiro("Digite a senha: ");
+                                        limpar_tela();
 
                                         while (senha != 1234){
-                                            printf("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
-                                                scanf("%d", &senha);
+                                            senha = ler_inteiro("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
 
-                                                        if ( senha == 0 ){
-                                                            break;
-                                                        }
+                                                if ( senha == 0 ){
+                                                    break;
+                                                }
 
-                                                    limpar_tela();
+                                            limpar_tela();
                                         }
 
                                         if (senha == 1234){
@@ -291,19 +285,17 @@ int main(){
                             printf("Ainda não foi feita a contagem de votos.\n\n");
                     } else if (numero_candidato[3] != 0){
                             do{
-                                printf("Digite a senha: ");
-                                    scanf("%d", &senha);
-                                        limpar_tela();
+                                senha = ler_inteiro("Digite a senha: ");
+                                    limpar_tela();
 
                             while (senha != 1234){
-                                printf("Senha inválida. Digite novamente ou '0' para voltar ao menu: ");
-                                    scanf("%d", &senha);
+                                senha = ler_inteiro("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
 
-                                        if ( senha == 0 ){
-                                            break;
-                                        }
+                                    if ( senha == 0 ){
+                                        break;
+                                    }
 
-                                    limpar_tela();
+                                limpar_tela();
                             }
 
                                         if (senha == 1234){
