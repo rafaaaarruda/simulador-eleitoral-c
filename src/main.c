@@ -425,12 +425,13 @@ int main(){
                                                             printf("[%d] - %s\n", numero_candidato[primeiro], nome_candidato[primeiro]);
                                                             printf("[%d] - %s\n", numero_candidato[segundo], nome_candidato[segundo]);
                                                             printf("[100] - Sair da votação\n");
-                                                            printf("Digite o número do seu candidato(a) ou uma das opções acima: ");
-                                                                scanf("%d", &voto);
+
+                                                            voto = ler_inteiro(
+                                                                "Digite o número do seu candidato(a) ou uma das opções acima: "
+                                                            );
 
                                                                 while ( voto < 0 ){
-                                                                        printf("\nVoto inválido. Digite novamente: ");
-                                                                            scanf("%d", &voto);
+                                                                    voto = ler_inteiro("\nVoto inválido. Digite novamente: ");
                                                                 }
 
                                                                     if (voto == 100){
