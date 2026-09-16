@@ -63,14 +63,22 @@ int main(){
 
                                     controle[0] = 1;
 
+                                    char mensagem[100];
                                     for (int i = 0; i < 4; i++){
-                                            printf("Digite o número do %d° candidato(a): ", i+1);
-                                                scanf("%d", &numero_candidato[i]);
+                                            snprintf(
+                                                mensagem,
+                                                sizeof(mensagem),
+                                                "Digite o número do %d° candidato(a): ",
+                                                i + 1
+                                            );
+
+                                            numero_candidato[i] = ler_inteiro(mensagem);
 
                                                     do {
-                                                        if (numero_valido == 1){
-                                                            printf("Número do candidato(a) inválido. Digite novamente: ");
-                                                                scanf("%d", &numero_candidato[i]);
+                                                        if (numero_valido == 1) {
+                                                            numero_candidato[i] = ler_inteiro(
+                                                                "Número do candidato(a) inválido. Digite novamente: "
+                                                            );
                                                         }
 
                                                         for (int j = 0; j < 4; j++){
@@ -84,8 +92,7 @@ int main(){
                                                             }
                                                         }
                                                     } while (numero_valido == 1 );
-
-                                            fflush(stdin); // sem da erro qnd vai pedir o nome
+                                                    
                                                 printf("Digite o nome do %d° candidato(a): ", i + 1);
                                                     fgets(nome_candidato[i], 50, stdin);
                                                         nome_candidato[i][strcspn(nome_candidato[i], "\n")] = '\0';  // remove o '\n' ao final para não ficar pulando linha
