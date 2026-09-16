@@ -8,23 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-void limpar_tela(){
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
-}
+#include "terminal.h"
 
-void pausar() {
-    #ifdef _WIN32
-        system("pause");
-    #else
-        printf("Pressione Enter para continuar...");
-        getchar();
-        getchar();
-    #endif
-}
 
 int main(){
     setlocale(LC_ALL, "Portuguese");
