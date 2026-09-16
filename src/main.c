@@ -9,7 +9,7 @@
 #include <string.h>
 
 #include "terminal.h"
-
+#include "entrada.h"
 
 int main(){
     setlocale(LC_ALL, "Portuguese");
@@ -32,12 +32,12 @@ int main(){
                 printf("3 - Encerrar votação\n");
                 printf("4 - Computar os votos\n");
                 printf("5 - Sair\n\n");
-                printf("Digite a opção desejada: ");
-                scanf("%d", &opcao_menu);
 
-                while (opcao_menu < 1 || opcao_menu > 5){
-                    printf("Opção inválida. Digite novamente: ");
-                        scanf("%d", &opcao_menu);
+
+                opcao_menu = ler_inteiro("Digite a opção desejada: ");
+
+                while (opcao_menu < 1 || opcao_menu > 5) {
+                    opcao_menu = ler_inteiro("Opção inválida. Digite novamente: ");
                 }
                 pausar();
                     limpar_tela();
