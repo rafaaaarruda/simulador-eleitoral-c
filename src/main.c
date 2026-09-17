@@ -65,42 +65,53 @@ int main(){
                                     controle[0] = 1;
 
                                     char mensagem[100];
-                                    for (int i = 0; i < 4; i++){
-                                            snprintf(
-                                                mensagem,
-                                                sizeof(mensagem),
-                                                "Digite o número do %d° candidato(a): ",
-                                                i + 1
-                                            );
 
-                                            numero_candidato[i] = ler_inteiro(mensagem);
+                                    for (int i = 0; i < 4; i++) {
 
-                                                    do {
-                                                        if (numero_valido == 1) {
-                                                            numero_candidato[i] = ler_inteiro(
-                                                                "Número do candidato(a) inválido. Digite novamente: "
-                                                            );
-                                                        }
+                                        snprintf(
+                                            mensagem,
+                                            sizeof(mensagem),
+                                            "Digite o número do %d° candidato(a): ",
+                                            i + 1
+                                        );
 
-                                                        for (int j = 0; j < 4; j++){
-                                                            if ( i != j ){
-                                                                if (numero_candidato[i] == numero_candidato[j]){
-                                                                    numero_valido = 1;
-                                                                        break;
-                                                                } else {
-                                                                    numero_valido = 0;
-                                                                }
-                                                            }
-                                                        }
-                                                    } while (numero_valido == 1 );
+                                        numero_candidato[i] = ler_inteiro(mensagem);
 
-                                                printf("Digite o nome do %d° candidato(a): ", i + 1);
-                                                    fgets(nome_candidato[i], 50, stdin);
-                                                        nome_candidato[i][strcspn(nome_candidato[i], "\n")] = '\0';  // remove o '\n' ao final para não ficar pulando linha
+                                        do {
+                                            if (numero_valido == 1) {
+                                                numero_candidato[i] = ler_inteiro(
+                                                    "Número do candidato(a) inválido. Digite novamente: "
+                                                );
+                                            }
 
+                                            for (int j = 0; j < 4; j++) {
+                                                if (i != j) {
+                                                    if (numero_candidato[i] == numero_candidato[j]) {
+                                                        numero_valido = 1;
+                                                        break;
+                                                    } else {
+                                                        numero_valido = 0;
+                                                    }
+                                                }
+                                            }
 
-                                            puts(" ");
-                                    } // fim for
+                                        } while (numero_valido == 1);
+
+                                        snprintf(
+                                            mensagem,
+                                            sizeof(mensagem),
+                                            "Digite o nome do %d° candidato(a): ",
+                                            i + 1
+                                        );
+
+                                        ler_nome(
+                                            mensagem,
+                                            nome_candidato[i],
+                                            sizeof(nome_candidato[i])
+                                        );
+
+                                        puts(" ");
+                                    }
 
                             } // fim senha
 
@@ -396,9 +407,9 @@ int main(){
 
                                                             ler_data(
                                                                 mensagem_confirmacao,
-                                                                &dia[0],
-                                                                &mes[0],
-                                                                &ano[0]
+                                                                &dia[1],
+                                                                &mes[1],
+                                                                &ano[1]
                                                             );
 
                                                                 if ( ano[0] < ano[1] ){
@@ -532,9 +543,9 @@ int main(){
 
                                                             ler_data(
                                                                 mensagem_confirmacao,
-                                                                &dia[1],
-                                                                &mes[1],
-                                                                &ano[1]
+                                                                &dia[0],
+                                                                &mes[0],
+                                                                &ano[0]
                                                             );
 
                                                             snprintf(

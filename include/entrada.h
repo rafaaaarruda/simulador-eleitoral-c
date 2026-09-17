@@ -3,5 +3,6 @@
 
 int ler_inteiro(const char *mensagem);
 void ler_data(const char *mensagem, int *dia, int *mes, int *ano);
+void ler_nome(const char *mensagem, char *nome, int tamanho);
 
 #endif
