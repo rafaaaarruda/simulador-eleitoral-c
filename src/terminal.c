@@ -17,6 +17,5 @@ void pausar(void) {
     #else
         printf("Pressione Enter para continuar...");
         getchar();
-        getchar();
     #endif
 }

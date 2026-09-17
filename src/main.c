@@ -373,13 +373,33 @@ int main(){
                                                                 pausar();
                                                                     limpar_tela();
 
-                                                            printf("Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ", nome_candidato[primeiro]);
-                                                                scanf("%d/%d/%d", &dia[0], &mes[0], &ano[0]);
-                                                                fflush(stdin);
+                                                            snprintf(
+                                                                mensagem_confirmacao,
+                                                                sizeof(mensagem_confirmacao),
+                                                                "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+                                                                nome_candidato[primeiro]
+                                                            );
 
-                                                            printf("Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ", nome_candidato[segundo]);
-                                                                scanf("%d/%d/%d", &dia[1], &mes[1], &ano[1]);
-                                                                fflush(stdin);
+                                                            ler_data(
+                                                                mensagem_confirmacao,
+                                                                &dia[0],
+                                                                &mes[0],
+                                                                &ano[0]
+                                                            );
+
+                                                            snprintf(
+                                                                mensagem_confirmacao,
+                                                                sizeof(mensagem_confirmacao),
+                                                                "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+                                                                nome_candidato[segundo]
+                                                            );
+
+                                                            ler_data(
+                                                                mensagem_confirmacao,
+                                                                &dia[0],
+                                                                &mes[0],
+                                                                &ano[0]
+                                                            );
 
                                                                 if ( ano[0] < ano[1] ){
                                                                     printf("O candidato(a) %s venceu.\n", nome_candidato[primeiro]);
@@ -503,13 +523,33 @@ int main(){
                                                             pausar();
                                                                 limpar_tela();
 
-                                                            printf("Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ", nome_candidato[primeiro]);
-                                                                scanf("%d/%d/%d", &dia[0], &mes[0], &ano[0]);
-                                                                fflush(stdin);
+                                                            snprintf(
+                                                                mensagem_confirmacao,
+                                                                sizeof(mensagem_confirmacao),
+                                                                "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+                                                                nome_candidato[primeiro]
+                                                            );
 
-                                                            printf("Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ", nome_candidato[segundo]);
-                                                                scanf("%d/%d/%d", &dia[1], &mes[1], &ano[1]);
-                                                                fflush(stdin);
+                                                            ler_data(
+                                                                mensagem_confirmacao,
+                                                                &dia[1],
+                                                                &mes[1],
+                                                                &ano[1]
+                                                            );
+
+                                                            snprintf(
+                                                                mensagem_confirmacao,
+                                                                sizeof(mensagem_confirmacao),
+                                                                "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+                                                                nome_candidato[segundo]
+                                                            );
+
+                                                            ler_data(
+                                                                mensagem_confirmacao,
+                                                                &dia[1],
+                                                                &mes[1],
+                                                                &ano[1]
+                                                            );
 
                                                                 if ( ano[0] < ano[1] ){
                                                                     printf("O candidato(a) %s venceu.\n", nome_candidato[primeiro]);
