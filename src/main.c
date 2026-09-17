@@ -9,7 +9,7 @@
 #include <string.h>
 
 #include "terminal.h"
-
+#include "entrada.h"
 
 int main(){
     setlocale(LC_ALL, "Portuguese");
@@ -23,6 +23,7 @@ int main(){
     int maior_voto = 0, segundo_maior_voto = 0;
     int primeiro = 0, segundo = 0, numero_valido = 0;
     int dia[2], mes[2], ano[2];
+    char mensagem_confirmacao[150];
 
 
             do {
@@ -32,12 +33,12 @@ int main(){
                 printf("3 - Encerrar votação\n");
                 printf("4 - Computar os votos\n");
                 printf("5 - Sair\n\n");
-                printf("Digite a opção desejada: ");
-                scanf("%d", &opcao_menu);
 
-                while (opcao_menu < 1 || opcao_menu > 5){
-                    printf("Opção inválida. Digite novamente: ");
-                        scanf("%d", &opcao_menu);
+
+                opcao_menu = ler_inteiro("Digite a opção desejada: ");
+
+                while (opcao_menu < 1 || opcao_menu > 5) {
+                    opcao_menu = ler_inteiro("Opção inválida. Digite novamente: ");
                 }
                 pausar();
                     limpar_tela();
@@ -46,13 +47,11 @@ int main(){
                     if ( controle[0] == 1 ){
                         printf("Já foi feito o cadastro de candidatos.\n\n");
                     } else {
-                        printf("Digite a senha: ");
-                        scanf("%d", &senha);
+                        senha = ler_inteiro("Digite a senha: ");
                             limpar_tela();
 
                     while (senha != 1234){
-                        printf("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
-                            scanf("%d", &senha);
+                        senha = ler_inteiro("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
 
                                     if ( senha == 0 ){
                                         break;
@@ -65,36 +64,54 @@ int main(){
 
                                     controle[0] = 1;
 
-                                    for (int i = 0; i < 4; i++){
-                                            printf("Digite o número do %d° candidato(a): ", i+1);
-                                                scanf("%d", &numero_candidato[i]);
+                                    char mensagem[100];
 
-                                                    do {
-                                                        if (numero_valido == 1){
-                                                            printf("Número do candidato(a) inválido. Digite novamente: ");
-                                                                scanf("%d", &numero_candidato[i]);
-                                                        }
+                                    for (int i = 0; i < 4; i++) {
 
-                                                        for (int j = 0; j < 4; j++){
-                                                            if ( i != j ){
-                                                                if (numero_candidato[i] == numero_candidato[j]){
-                                                                    numero_valido = 1;
-                                                                        break;
-                                                                } else {
-                                                                    numero_valido = 0;
-                                                                }
-                                                            }
-                                                        }
-                                                    } while (numero_valido == 1 );
+                                        snprintf(
+                                            mensagem,
+                                            sizeof(mensagem),
+                                            "Digite o número do %d° candidato(a): ",
+                                            i + 1
+                                        );
 
-                                            fflush(stdin); // sem da erro qnd vai pedir o nome
-                                                printf("Digite o nome do %d° candidato(a): ", i + 1);
-                                                    fgets(nome_candidato[i], 50, stdin);
-                                                        nome_candidato[i][strcspn(nome_candidato[i], "\n")] = '\0';  // remove o '\n' ao final para não ficar pulando linha
+                                        numero_candidato[i] = ler_inteiro(mensagem);
 
+                                        do {
+                                            if (numero_valido == 1) {
+                                                numero_candidato[i] = ler_inteiro(
+                                                    "Número do candidato(a) inválido. Digite novamente: "
+                                                );
+                                            }
 
-                                            puts(" ");
-                                    } // fim for
+                                            for (int j = 0; j < 4; j++) {
+                                                if (i != j) {
+                                                    if (numero_candidato[i] == numero_candidato[j]) {
+                                                        numero_valido = 1;
+                                                        break;
+                                                    } else {
+                                                        numero_valido = 0;
+                                                    }
+                                                }
+                                            }
+
+                                        } while (numero_valido == 1);
+
+                                        snprintf(
+                                            mensagem,
+                                            sizeof(mensagem),
+                                            "Digite o nome do %d° candidato(a): ",
+                                            i + 1
+                                        );
+
+                                        ler_nome(
+                                            mensagem,
+                                            nome_candidato[i],
+                                            sizeof(nome_candidato[i])
+                                        );
+
+                                        puts(" ");
+                                    }
 
                             } // fim senha
 
@@ -108,19 +125,17 @@ int main(){
                         printf("Votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
 
                     } else if (numero_candidato[3] != 0){
-                                printf("Digite a senha: ");
-                                    scanf("%d", &senha);
-                                        limpar_tela();
+                                senha = ler_inteiro("Digite a senha: ");
+                                    limpar_tela();
 
                                 while (senha != 1234){
-                                    printf("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
-                                        scanf("%d", &senha);
+                                    senha = ler_inteiro("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
 
-                                                if ( senha == 0 ){
-                                                    break;
-                                                }
+                                        if ( senha == 0 ){
+                                            break;
+                                        }
 
-                                                limpar_tela();
+                                        limpar_tela();
 
                                     }
 
@@ -129,13 +144,13 @@ int main(){
                                         printf("-------Qntd. de Eleitores-------\n");
                                         printf("[1] + de 200k\n");
                                         printf("[2] - de 200k\n");
-                                        printf("Digite uma opção: ");
-                                            scanf("%d", &num_eleitores);
 
+                                        num_eleitores = ler_inteiro("Digite uma opção: ");
 
-                                        while ( num_eleitores != 1 && num_eleitores != 2 ){
-                                            printf("Número de eleitores inválido. Digite novamente: ");
-                                                scanf("%d", &num_eleitores);
+                                        while (num_eleitores != 1 && num_eleitores != 2) {
+                                            num_eleitores = ler_inteiro(
+                                                "Número de eleitores inválido. Digite novamente: "
+                                            );
                                         }
 
                                         pausar();
@@ -149,12 +164,13 @@ int main(){
                                             printf("----------Primeiro turno----------\n");
                                             printf("[1] - Voto Branco\n");
                                             printf("[100] - Sair da votação\n");
-                                            printf("Digite o número do seu candidato(a) ou uma das opções acima: ");
-                                                scanf("%d", &voto);
 
-                                                while ( voto < 0 ){
-                                                    printf("\nVoto inválido. Digite novamente: ");
-                                                        scanf("%d", &voto);
+                                            voto = ler_inteiro(
+                                                    "Digite o número do seu candidato(a) ou uma das opções acima: "
+                                            );
+
+                                                while (voto < 0) {
+                                                    voto = ler_inteiro("\nVoto inválido. Digite novamente: ");
                                                 }
 
                                                     if (voto == 100){
@@ -162,17 +178,24 @@ int main(){
 
 
                                                     } else if (voto == 1){
-                                                             printf("\nVocê está votando Branco. Para confirmar seu voto digite 1: ");
-                                                                scanf("%d", &confirmar_voto);
+                                                            confirmar_voto = ler_inteiro(
+                                                                "\nVocê está votando Branco. Para confirmar seu voto digite 1: "
+                                                            );
 
-                                                                    if (confirmar_voto == 1){
-                                                                        cont1[1] += 1;
-                                                                    }
-                                                                            limpar_tela();
+                                                            if (confirmar_voto == 1){
+                                                                cont1[1] += 1;
+                                                            }
+                                                                limpar_tela();
 
                                                     } else if ( voto == numero_candidato[0]){
-                                                         printf("\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ", nome_candidato[0]);
-                                                            scanf("%d", &confirmar_voto);
+                                                        snprintf(
+                                                            mensagem_confirmacao,
+                                                            sizeof(mensagem_confirmacao),
+                                                            "\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ",
+                                                            nome_candidato[0]
+                                                        );
+
+                                                        confirmar_voto = ler_inteiro(mensagem_confirmacao);
 
                                                                 if (confirmar_voto == 1){
                                                                     cont2[0] += 1;
@@ -180,8 +203,14 @@ int main(){
                                                                         limpar_tela();
 
                                                     } else if ( voto == numero_candidato[1]){
-                                                         printf("\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ", nome_candidato[1]);
-                                                            scanf("%d", &confirmar_voto);
+                                                        snprintf(
+                                                            mensagem_confirmacao,
+                                                            sizeof(mensagem_confirmacao),
+                                                            "\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ",
+                                                            nome_candidato[1]
+                                                        );
+
+                                                        confirmar_voto = ler_inteiro(mensagem_confirmacao);
 
                                                                 if (confirmar_voto == 1){
                                                                     cont2[1] += 1;
@@ -189,8 +218,14 @@ int main(){
                                                                         limpar_tela();
 
                                                     }else if ( voto == numero_candidato[2]){
-                                                         printf("\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ", nome_candidato[2]);
-                                                            scanf("%d", &confirmar_voto);
+                                                        snprintf(
+                                                            mensagem_confirmacao,
+                                                            sizeof(mensagem_confirmacao),
+                                                            "\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ",
+                                                            nome_candidato[2]
+                                                        );
+
+                                                        confirmar_voto = ler_inteiro(mensagem_confirmacao);
 
                                                                 if (confirmar_voto == 1){
                                                                     cont2[2] += 1;
@@ -198,8 +233,14 @@ int main(){
                                                                         limpar_tela();
 
                                                     }else if ( voto == numero_candidato[3]){
-                                                         printf("\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ", nome_candidato[3]);
-                                                            scanf("%d", &confirmar_voto);
+                                                        snprintf(
+                                                            mensagem_confirmacao,
+                                                            sizeof(mensagem_confirmacao),
+                                                            "\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ",
+                                                            nome_candidato[3]
+                                                        );
+
+                                                        confirmar_voto = ler_inteiro(mensagem_confirmacao);
 
                                                                 if (confirmar_voto == 1){
                                                                     cont2[3] += 1;
@@ -207,8 +248,9 @@ int main(){
                                                                         limpar_tela();
 
                                                     } else {
-                                                         printf("\nVocê está votando Nulo. Para confirmar seu voto digite 1: ");
-                                                            scanf("%d", &confirmar_voto);
+                                                        confirmar_voto = ler_inteiro(
+                                                            "\nVocê está votando Nulo. Para confirmar seu voto digite 1: "
+                                                        );
 
                                                                 if (confirmar_voto == 1){
                                                                     cont1[0] += 1;
@@ -238,19 +280,17 @@ int main(){
                                 printf("Ainda não foi feita a eleição.\n\n");
                             } else if (numero_candidato[3] != 0){
                                 do{
-                                    printf("Digite a senha: ");
-                                        scanf("%d", &senha);
-                                            limpar_tela();
+                                    senha = ler_inteiro("Digite a senha: ");
+                                        limpar_tela();
 
                                         while (senha != 1234){
-                                            printf("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
-                                                scanf("%d", &senha);
+                                            senha = ler_inteiro("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
 
-                                                        if ( senha == 0 ){
-                                                            break;
-                                                        }
+                                                if ( senha == 0 ){
+                                                    break;
+                                                }
 
-                                                    limpar_tela();
+                                            limpar_tela();
                                         }
 
                                         if (senha == 1234){
@@ -291,19 +331,17 @@ int main(){
                             printf("Ainda não foi feita a contagem de votos.\n\n");
                     } else if (numero_candidato[3] != 0){
                             do{
-                                printf("Digite a senha: ");
-                                    scanf("%d", &senha);
-                                        limpar_tela();
+                                senha = ler_inteiro("Digite a senha: ");
+                                    limpar_tela();
 
                             while (senha != 1234){
-                                printf("Senha inválida. Digite novamente ou '0' para voltar ao menu: ");
-                                    scanf("%d", &senha);
+                                senha = ler_inteiro("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
 
-                                        if ( senha == 0 ){
-                                            break;
-                                        }
+                                    if ( senha == 0 ){
+                                        break;
+                                    }
 
-                                    limpar_tela();
+                                limpar_tela();
                             }
 
                                         if (senha == 1234){
@@ -346,13 +384,33 @@ int main(){
                                                                 pausar();
                                                                     limpar_tela();
 
-                                                            printf("Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ", nome_candidato[primeiro]);
-                                                                scanf("%d/%d/%d", &dia[0], &mes[0], &ano[0]);
-                                                                fflush(stdin);
+                                                            snprintf(
+                                                                mensagem_confirmacao,
+                                                                sizeof(mensagem_confirmacao),
+                                                                "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+                                                                nome_candidato[primeiro]
+                                                            );
 
-                                                            printf("Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ", nome_candidato[segundo]);
-                                                                scanf("%d/%d/%d", &dia[1], &mes[1], &ano[1]);
-                                                                fflush(stdin);
+                                                            ler_data(
+                                                                mensagem_confirmacao,
+                                                                &dia[0],
+                                                                &mes[0],
+                                                                &ano[0]
+                                                            );
+
+                                                            snprintf(
+                                                                mensagem_confirmacao,
+                                                                sizeof(mensagem_confirmacao),
+                                                                "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+                                                                nome_candidato[segundo]
+                                                            );
+
+                                                            ler_data(
+                                                                mensagem_confirmacao,
+                                                                &dia[1],
+                                                                &mes[1],
+                                                                &ano[1]
+                                                            );
 
                                                                 if ( ano[0] < ano[1] ){
                                                                     printf("O candidato(a) %s venceu.\n", nome_candidato[primeiro]);
@@ -398,19 +456,21 @@ int main(){
                                                             printf("[%d] - %s\n", numero_candidato[primeiro], nome_candidato[primeiro]);
                                                             printf("[%d] - %s\n", numero_candidato[segundo], nome_candidato[segundo]);
                                                             printf("[100] - Sair da votação\n");
-                                                            printf("Digite o número do seu candidato(a) ou uma das opções acima: ");
-                                                                scanf("%d", &voto);
+
+                                                            voto = ler_inteiro(
+                                                                "Digite o número do seu candidato(a) ou uma das opções acima: "
+                                                            );
 
                                                                 while ( voto < 0 ){
-                                                                        printf("\nVoto inválido. Digite novamente: ");
-                                                                            scanf("%d", &voto);
+                                                                    voto = ler_inteiro("\nVoto inválido. Digite novamente: ");
                                                                 }
 
                                                                     if (voto == 100){
                                                                             printf("\nFim da votação.\n\n");
                                                                     } else if (voto == 1) {
-                                                                        printf("\nVocê está votando Branco. Para confirmar seu voto digite 1: ");
-                                                                            scanf("%d", &confirmar_voto);
+                                                                        confirmar_voto = ler_inteiro(
+                                                                            "\nVocê está votando Branco. Para confirmar seu voto digite 1: "
+                                                                        );
 
                                                                         if (confirmar_voto == 1){
                                                                             cont1[1] += 1;
@@ -418,8 +478,14 @@ int main(){
                                                                                 limpar_tela();
 
                                                                     } else if ( voto == numero_candidato[primeiro] ){
-                                                                        printf("\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ", nome_candidato[primeiro]);
-                                                                            scanf("%d", &confirmar_voto);
+                                                                        snprintf(
+                                                                            mensagem_confirmacao,
+                                                                            sizeof(mensagem_confirmacao),
+                                                                            "\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ",
+                                                                            nome_candidato[primeiro]
+                                                                        );
+
+                                                                        confirmar_voto = ler_inteiro(mensagem_confirmacao);
 
                                                                             if (confirmar_voto == 1){
                                                                                 cont2[primeiro]++;
@@ -427,8 +493,14 @@ int main(){
 
                                                                             limpar_tela();
                                                                     } else if (voto == numero_candidato[segundo] ){
-                                                                        printf("\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ", nome_candidato[segundo]);
-                                                                            scanf("%d", &confirmar_voto);
+                                                                        snprintf(
+                                                                            mensagem_confirmacao,
+                                                                            sizeof(mensagem_confirmacao),
+                                                                            "\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ",
+                                                                            nome_candidato[segundo]
+                                                                        );
+
+                                                                        confirmar_voto = ler_inteiro(mensagem_confirmacao);
 
                                                                             if (confirmar_voto == 1){
                                                                                 cont2[segundo]++;
@@ -436,8 +508,9 @@ int main(){
 
                                                                             limpar_tela();
                                                                     } else {
-                                                                        printf("\nVocê está votando Nulo. Para confirmar seu voto digite 1: ");
-                                                                            scanf("%d", &confirmar_voto);
+                                                                        confirmar_voto = ler_inteiro(
+                                                                            "\nVocê está votando Nulo. Para confirmar seu voto digite 1: "
+                                                                        );
 
                                                                             if (confirmar_voto == 1){
                                                                                 cont1[0] += 1;
@@ -461,13 +534,33 @@ int main(){
                                                             pausar();
                                                                 limpar_tela();
 
-                                                            printf("Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ", nome_candidato[primeiro]);
-                                                                scanf("%d/%d/%d", &dia[0], &mes[0], &ano[0]);
-                                                                fflush(stdin);
+                                                            snprintf(
+                                                                mensagem_confirmacao,
+                                                                sizeof(mensagem_confirmacao),
+                                                                "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+                                                                nome_candidato[primeiro]
+                                                            );
 
-                                                            printf("Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ", nome_candidato[segundo]);
-                                                                scanf("%d/%d/%d", &dia[1], &mes[1], &ano[1]);
-                                                                fflush(stdin);
+                                                            ler_data(
+                                                                mensagem_confirmacao,
+                                                                &dia[0],
+                                                                &mes[0],
+                                                                &ano[0]
+                                                            );
+
+                                                            snprintf(
+                                                                mensagem_confirmacao,
+                                                                sizeof(mensagem_confirmacao),
+                                                                "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+                                                                nome_candidato[segundo]
+                                                            );
+
+                                                            ler_data(
+                                                                mensagem_confirmacao,
+                                                                &dia[1],
+                                                                &mes[1],
+                                                                &ano[1]
+                                                            );
 
                                                                 if ( ano[0] < ano[1] ){
                                                                     printf("O candidato(a) %s venceu.\n", nome_candidato[primeiro]);
