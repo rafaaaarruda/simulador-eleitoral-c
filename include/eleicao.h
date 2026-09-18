@@ -11,4 +11,12 @@ typedef struct {
     float percentual;
 } Candidato;
 
+typedef struct {
+    Candidato candidatos[TOTAL_CANDIDATOS];
+    int votos_nulos;
+    int votos_brancos;
+    float percentual_nulos;
+    float percentual_brancos;
+} Eleicao;
+
 #endif
