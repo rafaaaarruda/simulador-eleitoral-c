@@ -453,90 +453,90 @@ int main() {
                                         limpar_tela();
                                     } //fim da votação
                                 } while (voto != 100);
-                            }
-                            //verificação segundo turno
-                            if (eleicao.candidatos[primeiro].votos > eleicao.candidatos[segundo].votos) {
-                                printf(
-                                    "O candidato(a) %s venceu o 2° turno com %d votos.\n",
-                                    eleicao.candidatos[primeiro].nome,
-                                    eleicao.candidatos[primeiro].votos
-                                );
-                            } else if (eleicao.candidatos[segundo].votos > eleicao.candidatos[primeiro].votos) {
-                                printf(
-                                    "O candidato(a) %s venceu o 2° turno com %d votos.\n",
-                                    eleicao.candidatos[segundo].nome,
-                                    eleicao.candidatos[segundo].votos
-                                );
-                            } else if (eleicao.candidatos[primeiro].votos == eleicao.candidatos[segundo].votos) {
-                                printf(
-                                    "\nEmpate. Desempate ocorrerá entre os candidatos %s e %s no formato (dd/mm/aaaa). \n",
-                                    eleicao.candidatos[primeiro].nome,
-                                    eleicao.candidatos[segundo].nome
-                                );
-                                pausar();
-                                limpar_tela();
-                                snprintf(
-                                    mensagem_confirmacao,
-                                    sizeof(mensagem_confirmacao),
-                                    "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
-                                    eleicao.candidatos[primeiro].nome
-                                );
-                                ler_data(
-                                    mensagem_confirmacao,
-                                    &dia[0],
-                                    &mes[0],
-                                    &ano[0]
-                                );
-                                snprintf(
-                                    mensagem_confirmacao,
-                                    sizeof(mensagem_confirmacao),
-                                    "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
-                                    eleicao.candidatos[segundo].nome
-                                );
-                                ler_data(
-                                    mensagem_confirmacao,
-                                    &dia[1],
-                                    &mes[1],
-                                    &ano[1]
-                                );
-                                if (ano[0] < ano[1]) {
+                                //verificação segundo turno
+                                if (eleicao.candidatos[primeiro].votos > eleicao.candidatos[segundo].votos) {
                                     printf(
-                                        "O candidato(a) %s venceu.\n",
-                                        eleicao.candidatos[primeiro].nome
+                                        "O candidato(a) %s venceu o 2° turno com %d votos.\n",
+                                        eleicao.candidatos[primeiro].nome,
+                                        eleicao.candidatos[primeiro].votos
                                     );
-                                } else if (ano[0] > ano[1]) {
+                                } else if (eleicao.candidatos[segundo].votos > eleicao.candidatos[primeiro].votos) {
                                     printf(
-                                        "O candidato(a) %s venceu.\n",
+                                        "O candidato(a) %s venceu o 2° turno com %d votos.\n",
+                                        eleicao.candidatos[segundo].nome,
+                                        eleicao.candidatos[segundo].votos
+                                    );
+                                } else if (eleicao.candidatos[primeiro].votos == eleicao.candidatos[segundo].votos) {
+                                    printf(
+                                        "\nEmpate. Desempate ocorrerá entre os candidatos %s e %s no formato (dd/mm/aaaa). \n",
+                                        eleicao.candidatos[primeiro].nome,
                                         eleicao.candidatos[segundo].nome
                                     );
-                                } else { // anos diferentes -> comparar os meses
-                                    if (mes[0] < mes[1]) {
+                                    pausar();
+                                    limpar_tela();
+                                    snprintf(
+                                        mensagem_confirmacao,
+                                        sizeof(mensagem_confirmacao),
+                                        "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+                                        eleicao.candidatos[primeiro].nome
+                                    );
+                                    ler_data(
+                                        mensagem_confirmacao,
+                                        &dia[0],
+                                        &mes[0],
+                                        &ano[0]
+                                    );
+                                    snprintf(
+                                        mensagem_confirmacao,
+                                        sizeof(mensagem_confirmacao),
+                                        "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+                                        eleicao.candidatos[segundo].nome
+                                    );
+                                    ler_data(
+                                        mensagem_confirmacao,
+                                        &dia[1],
+                                        &mes[1],
+                                        &ano[1]
+                                    );
+                                    if (ano[0] < ano[1]) {
                                         printf(
                                             "O candidato(a) %s venceu.\n",
                                             eleicao.candidatos[primeiro].nome
                                         );
-                                    } else if (mes[0] > mes[1]) {
+                                    } else if (ano[0] > ano[1]) {
                                         printf(
                                             "O candidato(a) %s venceu.\n",
                                             eleicao.candidatos[segundo].nome
                                         );
-                                    } else { // meses iguais -> comparar os dias
-                                        if (dia[0] < dia[1]) {
+                                    } else { // anos diferentes -> comparar os meses
+                                        if (mes[0] < mes[1]) {
                                             printf(
                                                 "O candidato(a) %s venceu.\n",
                                                 eleicao.candidatos[primeiro].nome
                                             );
-                                        } else if (dia[0] > dia[1]) {
+                                        } else if (mes[0] > mes[1]) {
                                             printf(
                                                 "O candidato(a) %s venceu.\n",
                                                 eleicao.candidatos[segundo].nome
                                             );
+                                        } else { // meses iguais -> comparar os dias
+                                            if (dia[0] < dia[1]) {
+                                                printf(
+                                                    "O candidato(a) %s venceu.\n",
+                                                    eleicao.candidatos[primeiro].nome
+                                                );
+                                            } else if (dia[0] > dia[1]) {
+                                                printf(
+                                                    "O candidato(a) %s venceu.\n",
+                                                    eleicao.candidatos[segundo].nome
+                                                );
+                                            }
                                         }
                                     }
                                 }
+                                /*printf("Fim do programa.\n");
+                                return 0;*/
                             }
-                            /*printf("Fim do programa.\n");
-                            return 0;*/
                         } // fim do if resultado da votação
                     } // fim do if
                 } while (0); // fim do "do" caso o numero_candidato[3] seja != 0
