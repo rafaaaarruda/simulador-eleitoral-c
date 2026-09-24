@@ -17,7 +17,6 @@ int main() {
 
     int opcao_menu, voto, senha = 1234, num_eleitores;
     int controle[4] = {0, 0, 0, 0};
-    float total_votos, total_votos_validos;
     int confirmar_voto, idade[2] = {0, 0};
     Eleicao eleicao = {0};
     int maior_voto = 0, segundo_maior_voto = 0;
@@ -228,12 +227,7 @@ int main() {
                     }
                     if (senha == 1234) {
                         controle[1] = 1;
-                        total_votos = calcular_total_votos(&eleicao);
-                        for (int i = 0; i < 4; i++) {
-                            eleicao.candidatos[i].percentual = (eleicao.candidatos[i].votos * 100) / total_votos;
-                        }
-                        eleicao.percentual_nulos = (eleicao.votos_nulos * 100) / total_votos; //votos nulos
-                        eleicao.percentual_brancos = (eleicao.votos_brancos * 100) / total_votos; //votos brancos
+                        calcular_percentuais(&eleicao);
                         printf("Votos encerrados.\n\n");
                     } // fim do if senha
                 } while (0); // fim do "do" caso o numero_candidato[3] seja != 0

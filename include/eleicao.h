@@ -20,5 +20,6 @@ typedef struct {
 } Eleicao;
 
 int calcular_total_votos(const Eleicao *eleicao);
+void calcular_percentuais(Eleicao *eleicao);
 
 #endif
