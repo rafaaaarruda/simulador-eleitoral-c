@@ -20,7 +20,7 @@ int main() {
     int confirmar_voto, idade[2] = {0, 0};
     Eleicao eleicao = {0};
     int maior_voto = 0, segundo_maior_voto = 0;
-    int primeiro = 0, segundo = 0, numero_valido = 0;
+    int primeiro = 0, segundo = 0;
     int dia[2], mes[2], ano[2];
     char mensagem_confirmacao[150];
 
@@ -52,45 +52,7 @@ int main() {
                 }
                 if (senha == 1234) {
                     controle[0] = 1;
-                    char mensagem[100];
-                    for (int i = 0; i < 4; i++) {
-                        snprintf(
-                            mensagem,
-                            sizeof(mensagem),
-                            "Digite o número do %d° candidato(a): ",
-                            i + 1
-                        );
-                        eleicao.candidatos[i].numero = ler_inteiro(mensagem);
-                        do {
-                            if (numero_valido == 1) {
-                                eleicao.candidatos[i].numero = ler_inteiro(
-                                    "Número do candidato(a) inválido. Digite novamente: "
-                                );
-                            }
-                            for (int j = 0; j < 4; j++) {
-                                if (i != j) {
-                                    if (eleicao.candidatos[i].numero == eleicao.candidatos[j].numero) {
-                                        numero_valido = 1;
-                                        break;
-                                    } else {
-                                        numero_valido = 0;
-                                    }
-                                }
-                            }
-                        } while (numero_valido == 1);
-                        snprintf(
-                            mensagem,
-                            sizeof(mensagem),
-                            "Digite o nome do %d° candidato(a): ",
-                            i + 1
-                        );
-                        ler_nome(
-                            mensagem,
-                            eleicao.candidatos[i].nome,
-                            sizeof(eleicao.candidatos[i].nome)
-                        );
-                        puts(" ");
-                    }
+                    cadastrar_candidatos(&eleicao);
                 } // fim senha
             } // fim controle
             pausar();

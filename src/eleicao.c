@@ -1,4 +1,57 @@
+#include <stdio.h>
+
+#include "entrada.h"
 #include "eleicao.h"
+
+void cadastrar_candidatos(Eleicao *eleicao) {
+    int numero_valido = 0;
+    char mensagem[100];
+
+    for (int i = 0; i < TOTAL_CANDIDATOS; i++) {
+        snprintf(
+            mensagem,
+            sizeof(mensagem),
+            "Digite o número do %d° candidato(a): ",
+            i + 1
+        );
+
+        eleicao->candidatos[i].numero = ler_inteiro(mensagem);
+
+        do {
+            if (numero_valido == 1) {
+                eleicao->candidatos[i].numero = ler_inteiro(
+                    "Número do candidato(a) inválido. Digite novamente: "
+                );
+            }
+
+            for (int j = 0; j < TOTAL_CANDIDATOS; j++) {
+                if (i != j) {
+                    if (eleicao->candidatos[i].numero == eleicao->candidatos[j].numero) {
+                        numero_valido = 1;
+                        break;
+                    } else {
+                        numero_valido = 0;
+                    }
+                }
+            }
+        } while (numero_valido == 1);
+
+        snprintf(
+            mensagem,
+            sizeof(mensagem),
+            "Digite o nome do %d° candidato(a): ",
+            i + 1
+        );
+
+        ler_nome(
+            mensagem,
+            eleicao->candidatos[i].nome,
+            sizeof(eleicao->candidatos[i].nome)
+        );
+
+        puts(" ");
+    }
+}
 
 int calcular_total_votos(const Eleicao *eleicao) {
     int total = eleicao->votos_nulos + eleicao->votos_brancos;

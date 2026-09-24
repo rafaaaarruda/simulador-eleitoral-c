@@ -19,6 +19,7 @@ typedef struct {
     float percentual_brancos;
 } Eleicao;
 
+void cadastrar_candidatos(Eleicao *eleicao);
 int calcular_total_votos(const Eleicao *eleicao);
 void calcular_percentuais(Eleicao *eleicao);
 
