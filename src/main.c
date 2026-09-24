@@ -228,7 +228,7 @@ int main() {
                     }
                     if (senha == 1234) {
                         controle[1] = 1;
-                        total_votos = eleicao.votos_nulos + eleicao.votos_brancos + eleicao.candidatos[0].votos + eleicao.candidatos[1].votos + eleicao.candidatos[2].votos + eleicao.candidatos[3].votos;
+                        total_votos = calcular_total_votos(&eleicao);
                         for (int i = 0; i < 4; i++) {
                             eleicao.candidatos[i].percentual = (eleicao.candidatos[i].votos * 100) / total_votos;
                         }
