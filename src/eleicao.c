@@ -10,17 +10,37 @@ int calcular_total_votos(const Eleicao *eleicao) {
     return total;
 }
 
-void calcular_percentuais(Eleicao *eleicao) {
-    int total_votos = calcular_total_votos(eleicao);
+static int calcular_total_votos_validos(const Eleicao *eleicao) {
+    int total = 0;
 
     for (int i = 0; i < TOTAL_CANDIDATOS; i++) {
-        eleicao->candidatos[i].percentual =
-            (eleicao->candidatos[i].votos * 100.0f) / total_votos;
+        total += eleicao->candidatos[i].votos;
     }
 
-    eleicao->percentual_nulos =
-        (eleicao->votos_nulos * 100.0f) / total_votos;
+    return total;
+}
 
-    eleicao->percentual_brancos =
-        (eleicao->votos_brancos * 100.0f) / total_votos;
+void calcular_percentuais(Eleicao *eleicao) {
+    int total_votos = calcular_total_votos(eleicao);
+    int total_votos_validos = calcular_total_votos_validos(eleicao);
+
+    for (int i = 0; i < TOTAL_CANDIDATOS; i++) {
+        if (total_votos_validos > 0) {
+            eleicao->candidatos[i].percentual =
+                (eleicao->candidatos[i].votos * 100.0f) / total_votos_validos;
+        } else {
+            eleicao->candidatos[i].percentual = 0.0f;
+        }
+    }
+
+    if (total_votos > 0) {
+        eleicao->percentual_nulos =
+            (eleicao->votos_nulos * 100.0f) / total_votos;
+
+        eleicao->percentual_brancos =
+            (eleicao->votos_brancos * 100.0f) / total_votos;
+    } else {
+        eleicao->percentual_nulos = 0.0f;
+        eleicao->percentual_brancos = 0.0f;
+    }
 }
