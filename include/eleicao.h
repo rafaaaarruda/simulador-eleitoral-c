@@ -21,6 +21,7 @@ typedef struct {
 
 void cadastrar_candidatos(Eleicao *eleicao);
 void realizar_primeiro_turno(Eleicao *eleicao);
+void realizar_segundo_turno(Eleicao *eleicao, int primeiro, int segundo);
 int calcular_total_votos(const Eleicao *eleicao);
 void calcular_percentuais(Eleicao *eleicao);
 
