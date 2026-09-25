@@ -2,6 +2,7 @@
 
 #include "entrada.h"
 #include "eleicao.h"
+#include "terminal.h"
 
 void cadastrar_candidatos(Eleicao *eleicao) {
     int numero_valido = 0;
@@ -51,6 +52,110 @@ void cadastrar_candidatos(Eleicao *eleicao) {
 
         puts(" ");
     }
+}
+
+void realizar_primeiro_turno(Eleicao *eleicao) {
+    int voto;
+    int confirmar_voto;
+    char mensagem_confirmacao[150];
+
+    do {
+        printf("----------Primeiro turno----------\n");
+        printf("[1] - Voto Branco\n");
+        printf("[100] - Sair da votação\n");
+
+        voto = ler_inteiro(
+            "Digite o número do seu candidato(a) ou uma das opções acima: "
+        );
+
+        while (voto < 0) {
+            voto = ler_inteiro("\nVoto inválido. Digite novamente: ");
+        }
+
+        if (voto == 100) {
+            printf("\nFim da votação.\n\n");
+        } else if (voto == 1) {
+            confirmar_voto = ler_inteiro(
+                "\nVocê está votando Branco. Para confirmar seu voto digite 1: "
+            );
+
+            if (confirmar_voto == 1) {
+                eleicao->votos_brancos += 1;
+            }
+
+            limpar_tela();
+        } else if (voto == eleicao->candidatos[0].numero) {
+            snprintf(
+                mensagem_confirmacao,
+                sizeof(mensagem_confirmacao),
+                "\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ",
+                eleicao->candidatos[0].nome
+            );
+
+            confirmar_voto = ler_inteiro(mensagem_confirmacao);
+
+            if (confirmar_voto == 1) {
+                eleicao->candidatos[0].votos += 1;
+            }
+
+            limpar_tela();
+        } else if (voto == eleicao->candidatos[1].numero) {
+            snprintf(
+                mensagem_confirmacao,
+                sizeof(mensagem_confirmacao),
+                "\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ",
+                eleicao->candidatos[1].nome
+            );
+
+            confirmar_voto = ler_inteiro(mensagem_confirmacao);
+
+            if (confirmar_voto == 1) {
+                eleicao->candidatos[1].votos += 1;
+            }
+
+            limpar_tela();
+        } else if (voto == eleicao->candidatos[2].numero) {
+            snprintf(
+                mensagem_confirmacao,
+                sizeof(mensagem_confirmacao),
+                "\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ",
+                eleicao->candidatos[2].nome
+            );
+
+            confirmar_voto = ler_inteiro(mensagem_confirmacao);
+
+            if (confirmar_voto == 1) {
+                eleicao->candidatos[2].votos += 1;
+            }
+
+            limpar_tela();
+        } else if (voto == eleicao->candidatos[3].numero) {
+            snprintf(
+                mensagem_confirmacao,
+                sizeof(mensagem_confirmacao),
+                "\nVocê está votando no candidato(a) %s. Para confirmar seu voto digite 1: ",
+                eleicao->candidatos[3].nome
+            );
+
+            confirmar_voto = ler_inteiro(mensagem_confirmacao);
+
+            if (confirmar_voto == 1) {
+                eleicao->candidatos[3].votos += 1;
+            }
+
+            limpar_tela();
+        } else {
+            confirmar_voto = ler_inteiro(
+                "\nVocê está votando Nulo. Para confirmar seu voto digite 1: "
+            );
+
+            if (confirmar_voto == 1) {
+                eleicao->votos_nulos += 1;
+            }
+
+            limpar_tela();
+        }
+    } while (voto != 100);
 }
 
 int calcular_total_votos(const Eleicao *eleicao) {

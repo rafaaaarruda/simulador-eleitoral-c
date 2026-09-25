@@ -20,6 +20,7 @@ typedef struct {
 } Eleicao;
 
 void cadastrar_candidatos(Eleicao *eleicao);
+void realizar_primeiro_turno(Eleicao *eleicao);
 int calcular_total_votos(const Eleicao *eleicao);
 void calcular_percentuais(Eleicao *eleicao);
 
