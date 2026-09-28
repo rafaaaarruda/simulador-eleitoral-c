@@ -19,7 +19,6 @@ int main() {
     int controle[4] = {0, 0, 0, 0};
     int idade[2] = {0, 0};
     Eleicao eleicao = {0};
-    int maior_voto = 0, segundo_maior_voto = 0;
     int primeiro = 0, segundo = 0;
     int dia[2], mes[2], ano[2];
     char mensagem_confirmacao[150];
@@ -170,19 +169,10 @@ int main() {
                             printf("Votos Nulos - %d e ocupa %.2f%% do total\n", eleicao.votos_nulos, eleicao.percentual_nulos);
                             printf("Votos Brancos - %d e ocupa %.f%% do total\n", eleicao.votos_brancos, eleicao.percentual_brancos);
                         }
-                        for (int i = 0; i < 4; i++) {
-                            if (eleicao.candidatos[i].votos > maior_voto) {
-                                segundo_maior_voto = maior_voto;
-                                maior_voto = eleicao.candidatos[i].votos;
-                                segundo = primeiro;
-                                primeiro = i;
-                            } else if (eleicao.candidatos[i].votos > segundo_maior_voto) {
-                                segundo_maior_voto = eleicao.candidatos[i].votos;
-                                segundo = i;
-                            }
-                        }
+                        identificar_primeiro_segundo(&eleicao, &primeiro, &segundo);
+
                         if (num_eleitores == 2) {
-                            if (maior_voto == segundo_maior_voto) { //empatou 1° turno com - 200k eleitores
+                            if (eleicao.candidatos[primeiro].votos == eleicao.candidatos[segundo].votos) { //empatou 1° turno com - 200k eleitores
                                 printf(
                                     "\nNão houve vencedor. Ocorrerá desempate por meio da idade dos candidatos %s e %s. \n\n",
                                     eleicao.candidatos[primeiro].nome,

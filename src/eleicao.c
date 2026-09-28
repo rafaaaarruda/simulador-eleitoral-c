@@ -245,6 +245,26 @@ void realizar_segundo_turno(Eleicao *eleicao, int primeiro, int segundo) {
     } while (voto != 100);
 }
 
+void identificar_primeiro_segundo(const Eleicao *eleicao, int *primeiro, int *segundo) {
+    int maior_voto = 0;
+    int segundo_maior_voto = 0;
+
+    *primeiro = 0;
+    *segundo = 0;
+
+    for (int i = 0; i < TOTAL_CANDIDATOS; i++) {
+        if (eleicao->candidatos[i].votos > maior_voto) {
+            segundo_maior_voto = maior_voto;
+            maior_voto = eleicao->candidatos[i].votos;
+            *segundo = *primeiro;
+            *primeiro = i;
+        } else if (eleicao->candidatos[i].votos > segundo_maior_voto) {
+            segundo_maior_voto = eleicao->candidatos[i].votos;
+            *segundo = i;
+        }
+    }
+}
+
 int calcular_total_votos(const Eleicao *eleicao) {
     int total = eleicao->votos_nulos + eleicao->votos_brancos;
 
