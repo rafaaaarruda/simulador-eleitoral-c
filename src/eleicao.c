@@ -275,7 +275,7 @@ void exibir_resultados(const Eleicao *eleicao, int num_eleitores) {
             eleicao->percentual_nulos
         );
         printf(
-            "Votos Brancos - %d e ocupa %.f%% do total\n",
+            "Votos Brancos - %d e ocupa %.2f%% do total\n",
             eleicao->votos_brancos,
             eleicao->percentual_brancos
         );
