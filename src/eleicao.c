@@ -283,20 +283,20 @@ void exibir_resultados(const Eleicao *eleicao, int num_eleitores) {
 }
 
 void identificar_primeiro_segundo(const Eleicao *eleicao, int *primeiro, int *segundo) {
-    int maior_voto = 0;
-    int segundo_maior_voto = 0;
-
     *primeiro = 0;
-    *segundo = 0;
+    *segundo = 1;
 
-    for (int i = 0; i < TOTAL_CANDIDATOS; i++) {
-        if (eleicao->candidatos[i].votos > maior_voto) {
-            segundo_maior_voto = maior_voto;
-            maior_voto = eleicao->candidatos[i].votos;
+    if (eleicao->candidatos[*segundo].votos > eleicao->candidatos[*primeiro].votos) {
+        int temporario = *primeiro;
+        *primeiro = *segundo;
+        *segundo = temporario;
+    }
+
+    for (int i = 2; i < TOTAL_CANDIDATOS; i++) {
+        if (eleicao->candidatos[i].votos > eleicao->candidatos[*primeiro].votos) {
             *segundo = *primeiro;
             *primeiro = i;
-        } else if (eleicao->candidatos[i].votos > segundo_maior_voto) {
-            segundo_maior_voto = eleicao->candidatos[i].votos;
+        } else if (eleicao->candidatos[i].votos > eleicao->candidatos[*segundo].votos) {
             *segundo = i;
         }
     }
