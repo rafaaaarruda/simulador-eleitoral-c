@@ -229,7 +229,7 @@ int main() {
                                     eleicao.candidatos[primeiro].nome,
                                     eleicao.candidatos[primeiro].percentual
                                 );
-                            } else if (eleicao.candidatos[primeiro].percentual < 50.0) {
+                            } else {
                                 printf(
                                     "\nNão houve vencedor no 1° turno. Ocorrerá 2° turno entre os candidatos %s e %s. \n\n",
                                     eleicao.candidatos[primeiro].nome,
