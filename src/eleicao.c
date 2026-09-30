@@ -245,6 +245,43 @@ void realizar_segundo_turno(Eleicao *eleicao, int primeiro, int segundo) {
     } while (voto != 100);
 }
 
+void exibir_resultados(const Eleicao *eleicao, int num_eleitores) {
+    if (num_eleitores == 2) {
+        for (int i = 0; i < TOTAL_CANDIDATOS; i++) {
+            printf(
+                "Candidato(a) %s [%d] - %d votos\n",
+                eleicao->candidatos[i].nome,
+                eleicao->candidatos[i].numero,
+                eleicao->candidatos[i].votos
+            );
+        }
+
+        printf("Votos nulos - %d votos\n", eleicao->votos_nulos);
+        printf("Votos brancos - %d votos\n", eleicao->votos_brancos);
+    } else {
+        for (int i = 0; i < TOTAL_CANDIDATOS; i++) {
+            printf(
+                "Candidato(a) %s [%d] - %.2f%% com %d votos\n",
+                eleicao->candidatos[i].nome,
+                eleicao->candidatos[i].numero,
+                eleicao->candidatos[i].percentual,
+                eleicao->candidatos[i].votos
+            );
+        }
+
+        printf(
+            "Votos Nulos - %d e ocupa %.2f%% do total\n",
+            eleicao->votos_nulos,
+            eleicao->percentual_nulos
+        );
+        printf(
+            "Votos Brancos - %d e ocupa %.f%% do total\n",
+            eleicao->votos_brancos,
+            eleicao->percentual_brancos
+        );
+    }
+}
+
 void identificar_primeiro_segundo(const Eleicao *eleicao, int *primeiro, int *segundo) {
     int maior_voto = 0;
     int segundo_maior_voto = 0;

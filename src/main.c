@@ -145,30 +145,7 @@ int main() {
                     }
                     if (senha == 1234) {
                         controle[2] = 1;
-                        if (num_eleitores == 2) {
-                            for (int i = 0; i < 4; i++) {
-                                printf(
-                                    "Candidato(a) %s [%d] - %d votos\n",
-                                    eleicao.candidatos[i].nome,
-                                    eleicao.candidatos[i].numero,
-                                    eleicao.candidatos[i].votos
-                                );
-                            }
-                            printf("Votos nulos - %d votos\n", eleicao.votos_nulos);
-                            printf("Votos brancos - %d votos\n", eleicao.votos_brancos);
-                        } else {
-                            for (int i = 0; i < 4; i++) {
-                                printf(
-                                    "Candidato(a) %s [%d] - %.2f%% com %d votos\n",
-                                    eleicao.candidatos[i].nome,
-                                    eleicao.candidatos[i].numero,
-                                    eleicao.candidatos[i].percentual,
-                                    eleicao.candidatos[i].votos
-                                );
-                            }
-                            printf("Votos Nulos - %d e ocupa %.2f%% do total\n", eleicao.votos_nulos, eleicao.percentual_nulos);
-                            printf("Votos Brancos - %d e ocupa %.f%% do total\n", eleicao.votos_brancos, eleicao.percentual_brancos);
-                        }
+                        exibir_resultados(&eleicao, num_eleitores);
                         identificar_primeiro_segundo(&eleicao, &primeiro, &segundo);
 
                         if (num_eleitores == 2) {
