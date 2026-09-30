@@ -96,7 +96,7 @@ int main() {
         if (opcao_menu == 3) {
             if (controle[1] == 1) {
                 printf("A votação já foi encerrada. Compute os votos para saber o ganhador.\n\n");
-            } else if (eleicao.candidatos[0].votos == 0 && eleicao.candidatos[1].votos == 0 && eleicao.candidatos[2].votos == 0 && eleicao.candidatos[3].votos == 0) {
+            } else if (calcular_total_votos(&eleicao) == 0) {
                 printf("Ainda não foi feita a eleição.\n\n");
             } else if (eleicao.candidatos[3].numero != 0) {
                 do {
@@ -123,14 +123,20 @@ int main() {
         } // fim do if (opcao_menu == 3)
         if (opcao_menu == 4) {
             if (controle[2] == 1) {
-                printf(
-                    "O resultado da eleição já foi divulgado. O candidato(a) %s[%d] ganhou.\n\n",
-                    eleicao.candidatos[primeiro].nome,
-                    eleicao.candidatos[primeiro].numero
-                );
-            } else if (eleicao.candidatos[0].votos == 0 && eleicao.candidatos[1].votos == 0 && eleicao.candidatos[2].votos == 0 && eleicao.candidatos[3].votos == 0) {
+                if (calcular_total_votos_validos(&eleicao) == 0) {
+                    printf(
+                        "O resultado da eleição já foi divulgado. Não houve votos válidos em candidatos.\n\n"
+                    );
+                } else {
+                    printf(
+                        "O resultado da eleição já foi divulgado. O candidato(a) %s[%d] ganhou.\n\n",
+                        eleicao.candidatos[primeiro].nome,
+                        eleicao.candidatos[primeiro].numero
+                    );
+                }
+            } else if (calcular_total_votos(&eleicao) == 0) {
                 printf("Ainda não foi feita a eleição.\n\n");
-            } else if (eleicao.candidatos[0].percentual == 0 && eleicao.candidatos[1].percentual == 0 && eleicao.candidatos[2].percentual == 0 && eleicao.candidatos[3].percentual == 0) {
+            } else if (controle[1] == 0) {
                 printf("Ainda não foi feita a contagem de votos.\n\n");
             } else if (eleicao.candidatos[3].numero != 0) {
                 do {
@@ -146,6 +152,14 @@ int main() {
                     if (senha == 1234) {
                         controle[2] = 1;
                         exibir_resultados(&eleicao, num_eleitores);
+
+                        if (calcular_total_votos_validos(&eleicao) == 0) {
+                            printf(
+                                "\nNão houve votos válidos em candidatos. Não é possível determinar um vencedor.\n"
+                            );
+                            break;
+                        }
+
                         identificar_primeiro_segundo(&eleicao, &primeiro, &segundo);
 
                         if (num_eleitores == 2) {

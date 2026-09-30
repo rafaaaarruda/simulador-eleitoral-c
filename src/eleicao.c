@@ -312,7 +312,7 @@ int calcular_total_votos(const Eleicao *eleicao) {
     return total;
 }
 
-static int calcular_total_votos_validos(const Eleicao *eleicao) {
+int calcular_total_votos_validos(const Eleicao *eleicao) {
     int total = 0;
 
     for (int i = 0; i < TOTAL_CANDIDATOS; i++) {

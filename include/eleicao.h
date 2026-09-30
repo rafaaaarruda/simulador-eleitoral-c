@@ -25,6 +25,7 @@ void realizar_segundo_turno(Eleicao *eleicao, int primeiro, int segundo);
 void identificar_primeiro_segundo(const Eleicao *eleicao, int *primeiro, int *segundo);
 void exibir_resultados(const Eleicao *eleicao, int num_eleitores);
 int calcular_total_votos(const Eleicao *eleicao);
+int calcular_total_votos_validos(const Eleicao *eleicao);
 void calcular_percentuais(Eleicao *eleicao);
 
 #endif
