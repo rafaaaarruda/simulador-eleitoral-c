@@ -245,49 +245,125 @@ void realizar_segundo_turno(Eleicao *eleicao, int primeiro, int segundo) {
     } while (voto != 100);
 }
 
-void desempatar_por_idade(const Eleicao *eleicao, int primeiro, int segundo) {
-    int dia[2], mes[2], ano[2];
-    char mensagem_confirmacao[150];
+int identificar_empatados_na_lideranca(const Eleicao *eleicao, int empatados[]) {
+    int maior_votacao = eleicao->candidatos[0].votos;
+    int quantidade = 0;
 
-    snprintf(
-        mensagem_confirmacao,
-        sizeof(mensagem_confirmacao),
-        "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
-        eleicao->candidatos[primeiro].nome
-    );
-    ler_data(
-        mensagem_confirmacao,
-        &dia[0],
-        &mes[0],
-        &ano[0]
-    );
-
-    snprintf(
-        mensagem_confirmacao,
-        sizeof(mensagem_confirmacao),
-        "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
-        eleicao->candidatos[segundo].nome
-    );
-    ler_data(
-        mensagem_confirmacao,
-        &dia[1],
-        &mes[1],
-        &ano[1]
-    );
-
-    if (ano[0] < ano[1]) {
-        printf("O candidato(a) %s venceu.\n", eleicao->candidatos[primeiro].nome);
-    } else if (ano[0] > ano[1]) {
-        printf("O candidato(a) %s venceu.\n", eleicao->candidatos[segundo].nome);
-    } else if (mes[0] < mes[1]) {
-        printf("O candidato(a) %s venceu.\n", eleicao->candidatos[primeiro].nome);
-    } else if (mes[0] > mes[1]) {
-        printf("O candidato(a) %s venceu.\n", eleicao->candidatos[segundo].nome);
-    } else if (dia[0] < dia[1]) {
-        printf("O candidato(a) %s venceu.\n", eleicao->candidatos[primeiro].nome);
-    } else if (dia[0] > dia[1]) {
-        printf("O candidato(a) %s venceu.\n", eleicao->candidatos[segundo].nome);
+    for (int i = 1; i < TOTAL_CANDIDATOS; i++) {
+        if (eleicao->candidatos[i].votos > maior_votacao) {
+            maior_votacao = eleicao->candidatos[i].votos;
+        }
     }
+
+    for (int i = 0; i < TOTAL_CANDIDATOS; i++) {
+        if (eleicao->candidatos[i].votos == maior_votacao) {
+            empatados[quantidade] = i;
+            quantidade++;
+        }
+    }
+
+    return quantidade;
+}
+
+static int comparar_datas_nascimento(
+    int dia_a,
+    int mes_a,
+    int ano_a,
+    int dia_b,
+    int mes_b,
+    int ano_b
+) {
+    if (ano_a != ano_b) {
+        return ano_a < ano_b ? -1 : 1;
+    }
+
+    if (mes_a != mes_b) {
+        return mes_a < mes_b ? -1 : 1;
+    }
+
+    if (dia_a != dia_b) {
+        return dia_a < dia_b ? -1 : 1;
+    }
+
+    return 0;
+}
+
+int desempatar_por_idade(
+    const Eleicao *eleicao,
+    const int candidatos[],
+    int quantidade
+) {
+    int dia[TOTAL_CANDIDATOS];
+    int mes[TOTAL_CANDIDATOS];
+    int ano[TOTAL_CANDIDATOS];
+    char mensagem[150];
+
+    printf("Candidatos empatados:\n");
+    for (int i = 0; i < quantidade; i++) {
+        int indice = candidatos[i];
+        printf(
+            "- %s [%d]\n",
+            eleicao->candidatos[indice].nome,
+            eleicao->candidatos[indice].numero
+        );
+    }
+    puts(" ");
+
+    for (int i = 0; i < quantidade; i++) {
+        int indice = candidatos[i];
+
+        snprintf(
+            mensagem,
+            sizeof(mensagem),
+            "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+            eleicao->candidatos[indice].nome
+        );
+
+        ler_data(
+            mensagem,
+            &dia[i],
+            &mes[i],
+            &ano[i]
+        );
+    }
+
+    int posicao_mais_velho = 0;
+
+    for (int i = 1; i < quantidade; i++) {
+        if (comparar_datas_nascimento(
+                dia[i], mes[i], ano[i],
+                dia[posicao_mais_velho],
+                mes[posicao_mais_velho],
+                ano[posicao_mais_velho]
+            ) < 0) {
+            posicao_mais_velho = i;
+        }
+    }
+
+    int quantidade_mais_velhos = 0;
+
+    for (int i = 0; i < quantidade; i++) {
+        if (comparar_datas_nascimento(
+                dia[i], mes[i], ano[i],
+                dia[posicao_mais_velho],
+                mes[posicao_mais_velho],
+                ano[posicao_mais_velho]
+            ) == 0) {
+            quantidade_mais_velhos++;
+        }
+    }
+
+    if (quantidade_mais_velhos > 1) {
+        printf(
+            "\nO empate persiste: há candidatos empatados com a mesma data de nascimento.\n"
+        );
+        return -1;
+    }
+
+    int vencedor = candidatos[posicao_mais_velho];
+    printf("O candidato(a) %s venceu.\n", eleicao->candidatos[vencedor].nome);
+
+    return vencedor;
 }
 
 void exibir_resultados(const Eleicao *eleicao, int num_eleitores) {

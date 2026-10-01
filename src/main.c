@@ -161,16 +161,32 @@ int main() {
                         identificar_primeiro_segundo(&eleicao, &primeiro, &segundo);
 
                         if (num_eleitores == 2) {
-                            if (eleicao.candidatos[primeiro].votos == eleicao.candidatos[segundo].votos) { //empatou 1° turno com - 200k eleitores
+                            int empatados[TOTAL_CANDIDATOS];
+                            int quantidade_empatados = identificar_empatados_na_lideranca(
+                                &eleicao,
+                                empatados
+                            );
+
+                            if (quantidade_empatados > 1) {
                                 printf(
-                                    "\nNão houve vencedor. Ocorrerá desempate por meio da idade dos candidatos %s e %s. \n\n",
-                                    eleicao.candidatos[primeiro].nome,
-                                    eleicao.candidatos[segundo].nome
+                                    "\nHouve empate na maior votação. O desempate ocorrerá por idade.\n\n"
                                 );
                                 pausar();
                                 limpar_tela();
-                                desempatar_por_idade(&eleicao, primeiro, segundo);
-                            } else { // nao empatou -> houve um vencedor
+
+                                int vencedor = desempatar_por_idade(
+                                    &eleicao,
+                                    empatados,
+                                    quantidade_empatados
+                                );
+
+                                if (vencedor >= 0) {
+                                    primeiro = vencedor;
+                                } else {
+                                    controle[2] = 0;
+                                }
+                            } else {
+                                primeiro = empatados[0];
                                 printf(
                                     "O candidato(a) %s venceu o 1° turno.\n",
                                     eleicao.candidatos[primeiro].nome
@@ -214,7 +230,19 @@ int main() {
                                     );
                                     pausar();
                                     limpar_tela();
-                                    desempatar_por_idade(&eleicao, primeiro, segundo);
+
+                                    int empatados_segundo_turno[2] = {primeiro, segundo};
+                                    int vencedor = desempatar_por_idade(
+                                        &eleicao,
+                                        empatados_segundo_turno,
+                                        2
+                                    );
+
+                                    if (vencedor >= 0) {
+                                        primeiro = vencedor;
+                                    } else {
+                                        controle[2] = 0;
+                                    }
                                 }
                                 /*printf("Fim do programa.\n");
                                 return 0;*/
