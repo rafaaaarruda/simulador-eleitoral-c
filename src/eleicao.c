@@ -245,6 +245,51 @@ void realizar_segundo_turno(Eleicao *eleicao, int primeiro, int segundo) {
     } while (voto != 100);
 }
 
+void desempatar_por_idade(const Eleicao *eleicao, int primeiro, int segundo) {
+    int dia[2], mes[2], ano[2];
+    char mensagem_confirmacao[150];
+
+    snprintf(
+        mensagem_confirmacao,
+        sizeof(mensagem_confirmacao),
+        "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+        eleicao->candidatos[primeiro].nome
+    );
+    ler_data(
+        mensagem_confirmacao,
+        &dia[0],
+        &mes[0],
+        &ano[0]
+    );
+
+    snprintf(
+        mensagem_confirmacao,
+        sizeof(mensagem_confirmacao),
+        "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
+        eleicao->candidatos[segundo].nome
+    );
+    ler_data(
+        mensagem_confirmacao,
+        &dia[1],
+        &mes[1],
+        &ano[1]
+    );
+
+    if (ano[0] < ano[1]) {
+        printf("O candidato(a) %s venceu.\n", eleicao->candidatos[primeiro].nome);
+    } else if (ano[0] > ano[1]) {
+        printf("O candidato(a) %s venceu.\n", eleicao->candidatos[segundo].nome);
+    } else if (mes[0] < mes[1]) {
+        printf("O candidato(a) %s venceu.\n", eleicao->candidatos[primeiro].nome);
+    } else if (mes[0] > mes[1]) {
+        printf("O candidato(a) %s venceu.\n", eleicao->candidatos[segundo].nome);
+    } else if (dia[0] < dia[1]) {
+        printf("O candidato(a) %s venceu.\n", eleicao->candidatos[primeiro].nome);
+    } else if (dia[0] > dia[1]) {
+        printf("O candidato(a) %s venceu.\n", eleicao->candidatos[segundo].nome);
+    }
+}
+
 void exibir_resultados(const Eleicao *eleicao, int num_eleitores) {
     if (num_eleitores == 2) {
         for (int i = 0; i < TOTAL_CANDIDATOS; i++) {

@@ -20,8 +20,6 @@ int main() {
     int idade[2] = {0, 0};
     Eleicao eleicao = {0};
     int primeiro = 0, segundo = 0;
-    int dia[2], mes[2], ano[2];
-    char mensagem_confirmacao[150];
 
     do {
         printf("--------------Menu--------------\n\n");
@@ -171,65 +169,7 @@ int main() {
                                 );
                                 pausar();
                                 limpar_tela();
-                                snprintf(
-                                    mensagem_confirmacao,
-                                    sizeof(mensagem_confirmacao),
-                                    "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
-                                    eleicao.candidatos[primeiro].nome
-                                );
-                                ler_data(
-                                    mensagem_confirmacao,
-                                    &dia[0],
-                                    &mes[0],
-                                    &ano[0]
-                                );
-                                snprintf(
-                                    mensagem_confirmacao,
-                                    sizeof(mensagem_confirmacao),
-                                    "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
-                                    eleicao.candidatos[segundo].nome
-                                );
-                                ler_data(
-                                    mensagem_confirmacao,
-                                    &dia[1],
-                                    &mes[1],
-                                    &ano[1]
-                                );
-                                if (ano[0] < ano[1]) {
-                                    printf(
-                                        "O candidato(a) %s venceu.\n",
-                                        eleicao.candidatos[primeiro].nome
-                                    );
-                                } else if (ano[0] > ano[1]) {
-                                    printf(
-                                        "O candidato(a) %s venceu.\n",
-                                        eleicao.candidatos[segundo].nome
-                                    );
-                                } else { // anos diferentes -> comparar os meses
-                                    if (mes[0] < mes[1]) {
-                                        printf(
-                                            "O candidato(a) %s venceu.\n",
-                                            eleicao.candidatos[primeiro].nome
-                                        );
-                                    } else if (mes[0] > mes[1]) {
-                                        printf(
-                                            "O candidato(a) %s venceu.\n",
-                                            eleicao.candidatos[segundo].nome
-                                        );
-                                    } else { // meses iguais -> comparar os dias
-                                        if (dia[0] < dia[1]) {
-                                            printf(
-                                                "O candidato(a) %s venceu.\n",
-                                                eleicao.candidatos[primeiro].nome
-                                            );
-                                        } else if (dia[0] > dia[1]) {
-                                            printf(
-                                                "O candidato(a) %s venceu.\n",
-                                                eleicao.candidatos[segundo].nome
-                                            );
-                                        }
-                                    }
-                                }
+                                desempatar_por_idade(&eleicao, primeiro, segundo);
                             } else { // nao empatou -> houve um vencedor
                                 printf(
                                     "O candidato(a) %s venceu o 1° turno.\n",
@@ -274,65 +214,7 @@ int main() {
                                     );
                                     pausar();
                                     limpar_tela();
-                                    snprintf(
-                                        mensagem_confirmacao,
-                                        sizeof(mensagem_confirmacao),
-                                        "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
-                                        eleicao.candidatos[primeiro].nome
-                                    );
-                                    ler_data(
-                                        mensagem_confirmacao,
-                                        &dia[0],
-                                        &mes[0],
-                                        &ano[0]
-                                    );
-                                    snprintf(
-                                        mensagem_confirmacao,
-                                        sizeof(mensagem_confirmacao),
-                                        "Digite a data de nascimento do candidato(a) %s no formato (dd/mm/aaaa): ",
-                                        eleicao.candidatos[segundo].nome
-                                    );
-                                    ler_data(
-                                        mensagem_confirmacao,
-                                        &dia[1],
-                                        &mes[1],
-                                        &ano[1]
-                                    );
-                                    if (ano[0] < ano[1]) {
-                                        printf(
-                                            "O candidato(a) %s venceu.\n",
-                                            eleicao.candidatos[primeiro].nome
-                                        );
-                                    } else if (ano[0] > ano[1]) {
-                                        printf(
-                                            "O candidato(a) %s venceu.\n",
-                                            eleicao.candidatos[segundo].nome
-                                        );
-                                    } else { // anos diferentes -> comparar os meses
-                                        if (mes[0] < mes[1]) {
-                                            printf(
-                                                "O candidato(a) %s venceu.\n",
-                                                eleicao.candidatos[primeiro].nome
-                                            );
-                                        } else if (mes[0] > mes[1]) {
-                                            printf(
-                                                "O candidato(a) %s venceu.\n",
-                                                eleicao.candidatos[segundo].nome
-                                            );
-                                        } else { // meses iguais -> comparar os dias
-                                            if (dia[0] < dia[1]) {
-                                                printf(
-                                                    "O candidato(a) %s venceu.\n",
-                                                    eleicao.candidatos[primeiro].nome
-                                                );
-                                            } else if (dia[0] > dia[1]) {
-                                                printf(
-                                                    "O candidato(a) %s venceu.\n",
-                                                    eleicao.candidatos[segundo].nome
-                                                );
-                                            }
-                                        }
-                                    }
+                                    desempatar_por_idade(&eleicao, primeiro, segundo);
                                 }
                                 /*printf("Fim do programa.\n");
                                 return 0;*/
