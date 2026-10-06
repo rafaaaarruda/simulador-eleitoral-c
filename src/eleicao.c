@@ -163,8 +163,11 @@ void realizar_segundo_turno(Eleicao *eleicao, int primeiro, int segundo) {
     int confirmar_voto;
     char mensagem_confirmacao[150];
 
-    eleicao->candidatos[primeiro].votos = 0;
-    eleicao->candidatos[segundo].votos = 0;
+    for (int i = 0; i < TOTAL_CANDIDATOS; i++) {
+        eleicao->votos_segundo_turno[i] = 0;
+    }
+    eleicao->votos_nulos_segundo_turno = 0;
+    eleicao->votos_brancos_segundo_turno = 0;
 
     do {
         printf("----------Segundo Turno----------\n");
@@ -197,7 +200,7 @@ void realizar_segundo_turno(Eleicao *eleicao, int primeiro, int segundo) {
             );
 
             if (confirmar_voto == 1) {
-                eleicao->votos_brancos += 1;
+                eleicao->votos_brancos_segundo_turno += 1;
             }
 
             limpar_tela();
@@ -212,7 +215,7 @@ void realizar_segundo_turno(Eleicao *eleicao, int primeiro, int segundo) {
             confirmar_voto = ler_inteiro(mensagem_confirmacao);
 
             if (confirmar_voto == 1) {
-                eleicao->candidatos[primeiro].votos++;
+                eleicao->votos_segundo_turno[primeiro]++;
             }
 
             limpar_tela();
@@ -227,7 +230,7 @@ void realizar_segundo_turno(Eleicao *eleicao, int primeiro, int segundo) {
             confirmar_voto = ler_inteiro(mensagem_confirmacao);
 
             if (confirmar_voto == 1) {
-                eleicao->candidatos[segundo].votos++;
+                eleicao->votos_segundo_turno[segundo]++;
             }
 
             limpar_tela();
@@ -237,7 +240,7 @@ void realizar_segundo_turno(Eleicao *eleicao, int primeiro, int segundo) {
             );
 
             if (confirmar_voto == 1) {
-                eleicao->votos_nulos += 1;
+                eleicao->votos_nulos_segundo_turno += 1;
             }
 
             limpar_tela();

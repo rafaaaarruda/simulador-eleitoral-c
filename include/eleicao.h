@@ -17,6 +17,9 @@ typedef struct {
     int votos_brancos;
     float percentual_nulos;
     float percentual_brancos;
+    int votos_segundo_turno[TOTAL_CANDIDATOS];
+    int votos_nulos_segundo_turno;
+    int votos_brancos_segundo_turno;
     int vencedor;
 } Eleicao;
 

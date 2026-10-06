@@ -222,21 +222,21 @@ int main() {
                                 realizar_segundo_turno(&eleicao, primeiro, segundo);
 
                                 //verificação segundo turno
-                                if (eleicao.candidatos[primeiro].votos > eleicao.candidatos[segundo].votos) {
+                                if (eleicao.votos_segundo_turno[primeiro] > eleicao.votos_segundo_turno[segundo]) {
                                     eleicao.vencedor = primeiro;
                                     printf(
                                         "O candidato(a) %s venceu o 2° turno com %d votos.\n",
                                         eleicao.candidatos[primeiro].nome,
-                                        eleicao.candidatos[primeiro].votos
+                                        eleicao.votos_segundo_turno[primeiro]
                                     );
-                                } else if (eleicao.candidatos[segundo].votos > eleicao.candidatos[primeiro].votos) {
+                                } else if (eleicao.votos_segundo_turno[segundo] > eleicao.votos_segundo_turno[primeiro]) {
                                     eleicao.vencedor = segundo;
                                     printf(
                                         "O candidato(a) %s venceu o 2° turno com %d votos.\n",
                                         eleicao.candidatos[segundo].nome,
-                                        eleicao.candidatos[segundo].votos
+                                        eleicao.votos_segundo_turno[segundo]
                                     );
-                                } else if (eleicao.candidatos[primeiro].votos == eleicao.candidatos[segundo].votos) {
+                                } else if (eleicao.votos_segundo_turno[primeiro] == eleicao.votos_segundo_turno[segundo]) {
                                     printf(
                                         "\nEmpate. Desempate ocorrerá entre os candidatos %s e %s no formato (dd/mm/aaaa). \n",
                                         eleicao.candidatos[primeiro].nome,
