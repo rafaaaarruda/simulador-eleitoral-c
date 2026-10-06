@@ -17,6 +17,7 @@ typedef struct {
     int votos_brancos;
     float percentual_nulos;
     float percentual_brancos;
+    int vencedor;
 } Eleicao;
 
 void cadastrar_candidatos(Eleicao *eleicao);

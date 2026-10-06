@@ -18,7 +18,7 @@ int main() {
     int opcao_menu, senha = 1234, num_eleitores;
     int controle[4] = {0, 0, 0, 0};
     int idade[2] = {0, 0};
-    Eleicao eleicao = {0};
+    Eleicao eleicao = {.vencedor = -1};
     int primeiro = 0, segundo = 0;
 
     do {
@@ -128,8 +128,8 @@ int main() {
                 } else {
                     printf(
                         "O resultado da eleição já foi divulgado. O candidato(a) %s[%d] ganhou.\n\n",
-                        eleicao.candidatos[primeiro].nome,
-                        eleicao.candidatos[primeiro].numero
+                        eleicao.candidatos[eleicao.vencedor].nome,
+                        eleicao.candidatos[eleicao.vencedor].numero
                     );
                 }
             } else if (calcular_total_votos(&eleicao) == 0) {
@@ -182,11 +182,13 @@ int main() {
 
                                 if (vencedor >= 0) {
                                     primeiro = vencedor;
+                                    eleicao.vencedor = vencedor;
                                 } else {
                                     controle[2] = 0;
                                 }
                             } else {
                                 primeiro = empatados[0];
+                                eleicao.vencedor = primeiro;
                                 printf(
                                     "O candidato(a) %s venceu o 1° turno.\n",
                                     eleicao.candidatos[primeiro].nome
@@ -194,6 +196,7 @@ int main() {
                             }
                         } else { // cidade tem mais de 200k eleitores
                             if (eleicao.candidatos[primeiro].percentual > 50.0) { // if resultado da votação
+                                eleicao.vencedor = primeiro;
                                 printf(
                                     "O candidato(a) %s venceu o 1° turno com %.2f%% dos votos válidos.\n",
                                     eleicao.candidatos[primeiro].nome,
@@ -220,12 +223,14 @@ int main() {
 
                                 //verificação segundo turno
                                 if (eleicao.candidatos[primeiro].votos > eleicao.candidatos[segundo].votos) {
+                                    eleicao.vencedor = primeiro;
                                     printf(
                                         "O candidato(a) %s venceu o 2° turno com %d votos.\n",
                                         eleicao.candidatos[primeiro].nome,
                                         eleicao.candidatos[primeiro].votos
                                     );
                                 } else if (eleicao.candidatos[segundo].votos > eleicao.candidatos[primeiro].votos) {
+                                    eleicao.vencedor = segundo;
                                     printf(
                                         "O candidato(a) %s venceu o 2° turno com %d votos.\n",
                                         eleicao.candidatos[segundo].nome,
@@ -249,6 +254,7 @@ int main() {
 
                                     if (vencedor >= 0) {
                                         primeiro = vencedor;
+                                        eleicao.vencedor = vencedor;
                                     } else {
                                         controle[2] = 0;
                                     }
