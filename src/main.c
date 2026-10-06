@@ -221,6 +221,18 @@ int main() {
                                 limpar_tela();
                                 realizar_segundo_turno(&eleicao, primeiro, segundo);
 
+                                int total_votos_validos_segundo_turno =
+                                    eleicao.votos_segundo_turno[primeiro] +
+                                    eleicao.votos_segundo_turno[segundo];
+
+                                if (total_votos_validos_segundo_turno == 0) {
+                                    printf(
+                                        "\nNão houve votos válidos no 2° turno. Não é possível determinar um vencedor.\n"
+                                    );
+                                    controle[2] = 0;
+                                    break;
+                                }
+
                                 //verificação segundo turno
                                 if (eleicao.votos_segundo_turno[primeiro] > eleicao.votos_segundo_turno[segundo]) {
                                     eleicao.vencedor = primeiro;
