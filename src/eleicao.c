@@ -4,38 +4,54 @@
 #include "eleicao.h"
 #include "terminal.h"
 
+static int numero_candidato_ja_cadastrado(
+    const Eleicao *eleicao,
+    int indice_atual,
+    int numero
+) {
+    for (int i = 0; i < indice_atual; i++) {
+        if (eleicao->candidatos[i].numero == numero) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 void cadastrar_candidatos(Eleicao *eleicao) {
-    int numero_valido = 0;
     char mensagem[100];
 
     for (int i = 0; i < TOTAL_CANDIDATOS; i++) {
-        snprintf(
-            mensagem,
-            sizeof(mensagem),
-            "Digite o número do %d° candidato(a): ",
-            i + 1
-        );
+        while (1) {
+            snprintf(
+                mensagem,
+                sizeof(mensagem),
+                "Digite o número do %d° candidato(a): ",
+                i + 1
+            );
 
-        eleicao->candidatos[i].numero = ler_inteiro(mensagem);
+            int numero = ler_inteiro(mensagem);
 
-        do {
-            if (numero_valido == 1) {
-                eleicao->candidatos[i].numero = ler_inteiro(
-                    "Número do candidato(a) inválido. Digite novamente: "
+            if (numero <= 0) {
+                printf("Número inválido. Digite um número positivo.\n");
+                continue;
+            }
+
+            if (numero == 1 || numero == 100) {
+                printf(
+                    "Número indisponível. Os números 1 e 100 são reservados pelo sistema.\n"
                 );
+                continue;
             }
 
-            for (int j = 0; j < TOTAL_CANDIDATOS; j++) {
-                if (i != j) {
-                    if (eleicao->candidatos[i].numero == eleicao->candidatos[j].numero) {
-                        numero_valido = 1;
-                        break;
-                    } else {
-                        numero_valido = 0;
-                    }
-                }
+            if (numero_candidato_ja_cadastrado(eleicao, i, numero)) {
+                printf("Número já cadastrado. Digite um número diferente.\n");
+                continue;
             }
-        } while (numero_valido == 1);
+
+            eleicao->candidatos[i].numero = numero;
+            break;
+        }
 
         snprintf(
             mensagem,
