@@ -200,6 +200,15 @@ int main() {
                                     eleicao.candidatos[primeiro].percentual
                                 );
                             } else {
+                                if (!selecionar_finalistas_segundo_turno(
+                                        &eleicao,
+                                        &primeiro,
+                                        &segundo
+                                    )) {
+                                    controle[2] = 0;
+                                    break;
+                                }
+
                                 printf(
                                     "\nNão houve vencedor no 1° turno. Ocorrerá 2° turno entre os candidatos %s e %s. \n\n",
                                     eleicao.candidatos[primeiro].nome,

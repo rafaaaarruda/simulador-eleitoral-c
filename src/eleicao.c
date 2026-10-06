@@ -288,29 +288,22 @@ static int comparar_datas_nascimento(
     return 0;
 }
 
-int desempatar_por_idade(
+static int selecionar_mais_velhos(
     const Eleicao *eleicao,
     const int candidatos[],
-    int quantidade
+    int quantidade,
+    int quantidade_selecionar,
+    int selecionados[]
 ) {
     int dia[TOTAL_CANDIDATOS];
     int mes[TOTAL_CANDIDATOS];
     int ano[TOTAL_CANDIDATOS];
+    int ordem[TOTAL_CANDIDATOS];
     char mensagem[150];
 
-    printf("Candidatos empatados:\n");
     for (int i = 0; i < quantidade; i++) {
         int indice = candidatos[i];
-        printf(
-            "- %s [%d]\n",
-            eleicao->candidatos[indice].nome,
-            eleicao->candidatos[indice].numero
-        );
-    }
-    puts(" ");
-
-    for (int i = 0; i < quantidade; i++) {
-        int indice = candidatos[i];
+        ordem[i] = i;
 
         snprintf(
             mensagem,
@@ -327,43 +320,183 @@ int desempatar_por_idade(
         );
     }
 
-    int posicao_mais_velho = 0;
+    for (int i = 0; i < quantidade - 1; i++) {
+        for (int j = i + 1; j < quantidade; j++) {
+            int posicao_i = ordem[i];
+            int posicao_j = ordem[j];
 
-    for (int i = 1; i < quantidade; i++) {
-        if (comparar_datas_nascimento(
-                dia[i], mes[i], ano[i],
-                dia[posicao_mais_velho],
-                mes[posicao_mais_velho],
-                ano[posicao_mais_velho]
-            ) < 0) {
-            posicao_mais_velho = i;
+            if (comparar_datas_nascimento(
+                    dia[posicao_j], mes[posicao_j], ano[posicao_j],
+                    dia[posicao_i], mes[posicao_i], ano[posicao_i]
+                ) < 0) {
+                int temporario = ordem[i];
+                ordem[i] = ordem[j];
+                ordem[j] = temporario;
+            }
         }
     }
 
-    int quantidade_mais_velhos = 0;
+    if (quantidade_selecionar < quantidade) {
+        int ultima_vaga = ordem[quantidade_selecionar - 1];
+        int primeiro_fora = ordem[quantidade_selecionar];
 
-    for (int i = 0; i < quantidade; i++) {
         if (comparar_datas_nascimento(
-                dia[i], mes[i], ano[i],
-                dia[posicao_mais_velho],
-                mes[posicao_mais_velho],
-                ano[posicao_mais_velho]
+                dia[ultima_vaga], mes[ultima_vaga], ano[ultima_vaga],
+                dia[primeiro_fora], mes[primeiro_fora], ano[primeiro_fora]
             ) == 0) {
-            quantidade_mais_velhos++;
+            return 0;
         }
     }
 
-    if (quantidade_mais_velhos > 1) {
+    for (int i = 0; i < quantidade_selecionar; i++) {
+        selecionados[i] = candidatos[ordem[i]];
+    }
+
+    return 1;
+}
+
+int desempatar_por_idade(
+    const Eleicao *eleicao,
+    const int candidatos[],
+    int quantidade
+) {
+    printf("Candidatos empatados:\n");
+    for (int i = 0; i < quantidade; i++) {
+        int indice = candidatos[i];
+        printf(
+            "- %s [%d]\n",
+            eleicao->candidatos[indice].nome,
+            eleicao->candidatos[indice].numero
+        );
+    }
+    puts(" ");
+
+    int vencedor;
+
+    if (!selecionar_mais_velhos(eleicao, candidatos, quantidade, 1, &vencedor)) {
         printf(
             "\nO empate persiste: há candidatos empatados com a mesma data de nascimento.\n"
         );
         return -1;
     }
 
-    int vencedor = candidatos[posicao_mais_velho];
     printf("O candidato(a) %s venceu.\n", eleicao->candidatos[vencedor].nome);
 
     return vencedor;
+}
+
+int selecionar_finalistas_segundo_turno(
+    const Eleicao *eleicao,
+    int *primeiro,
+    int *segundo
+) {
+    int lideres[TOTAL_CANDIDATOS];
+    int quantidade_lideres = identificar_empatados_na_lideranca(eleicao, lideres);
+
+    if (quantidade_lideres == 2) {
+        *primeiro = lideres[0];
+        *segundo = lideres[1];
+        return 1;
+    }
+
+    if (quantidade_lideres > 2) {
+        printf(
+            "\nHá %d candidatos empatados na maior votação. "
+            "As duas vagas do 2° turno serão definidas por idade.\n\n",
+            quantidade_lideres
+        );
+        pausar();
+        limpar_tela();
+
+        printf("Candidatos empatados pelas vagas do 2° turno:\n");
+        for (int i = 0; i < quantidade_lideres; i++) {
+            int indice = lideres[i];
+            printf(
+                "- %s [%d]\n",
+                eleicao->candidatos[indice].nome,
+                eleicao->candidatos[indice].numero
+            );
+        }
+        puts(" ");
+
+        int selecionados[2];
+        if (!selecionar_mais_velhos(
+                eleicao,
+                lideres,
+                quantidade_lideres,
+                2,
+                selecionados
+            )) {
+            printf(
+                "\nO empate pelas vagas do 2° turno persiste: "
+                "há candidatos com a mesma data de nascimento na posição de corte.\n"
+            );
+            return 0;
+        }
+
+        *primeiro = selecionados[0];
+        *segundo = selecionados[1];
+        return 1;
+    }
+
+    *primeiro = lideres[0];
+
+    int segunda_maior_votacao = -1;
+    for (int i = 0; i < TOTAL_CANDIDATOS; i++) {
+        if (i != *primeiro && eleicao->candidatos[i].votos > segunda_maior_votacao) {
+            segunda_maior_votacao = eleicao->candidatos[i].votos;
+        }
+    }
+
+    int empatados_segunda_vaga[TOTAL_CANDIDATOS];
+    int quantidade_segunda_vaga = 0;
+
+    for (int i = 0; i < TOTAL_CANDIDATOS; i++) {
+        if (i != *primeiro && eleicao->candidatos[i].votos == segunda_maior_votacao) {
+            empatados_segunda_vaga[quantidade_segunda_vaga] = i;
+            quantidade_segunda_vaga++;
+        }
+    }
+
+    if (quantidade_segunda_vaga == 1) {
+        *segundo = empatados_segunda_vaga[0];
+        return 1;
+    }
+
+    printf(
+        "\nHá empate pela segunda vaga do 2° turno. O desempate ocorrerá por idade.\n\n"
+    );
+    pausar();
+    limpar_tela();
+
+    printf("Candidatos empatados pela segunda vaga:\n");
+    for (int i = 0; i < quantidade_segunda_vaga; i++) {
+        int indice = empatados_segunda_vaga[i];
+        printf(
+            "- %s [%d]\n",
+            eleicao->candidatos[indice].nome,
+            eleicao->candidatos[indice].numero
+        );
+    }
+    puts(" ");
+
+    int selecionado;
+    if (!selecionar_mais_velhos(
+            eleicao,
+            empatados_segunda_vaga,
+            quantidade_segunda_vaga,
+            1,
+            &selecionado
+        )) {
+        printf(
+            "\nO empate pela segunda vaga do 2° turno persiste: "
+            "há candidatos com a mesma data de nascimento.\n"
+        );
+        return 0;
+    }
+
+    *segundo = selecionado;
+    return 1;
 }
 
 void exibir_resultados(const Eleicao *eleicao, int num_eleitores) {

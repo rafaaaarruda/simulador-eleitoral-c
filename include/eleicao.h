@@ -23,6 +23,7 @@ void cadastrar_candidatos(Eleicao *eleicao);
 void realizar_primeiro_turno(Eleicao *eleicao);
 void realizar_segundo_turno(Eleicao *eleicao, int primeiro, int segundo);
 void identificar_primeiro_segundo(const Eleicao *eleicao, int *primeiro, int *segundo);
+int selecionar_finalistas_segundo_turno(const Eleicao *eleicao, int *primeiro, int *segundo);
 int identificar_empatados_na_lideranca(const Eleicao *eleicao, int empatados[]);
 int desempatar_por_idade(
     const Eleicao *eleicao,
