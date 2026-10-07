@@ -52,8 +52,8 @@ int main() {
         while (opcao_menu < 1 || opcao_menu > 5) {
             opcao_menu = ler_inteiro("Opção inválida. Digite novamente: ");
         }
-        pausar();
         limpar_tela();
+
         if (opcao_menu == 1) {
             if (eleicao.candidatos_cadastrados == 1) {
                 printf("Já foi feito o cadastro de candidatos.\n\n");
