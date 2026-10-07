@@ -12,10 +12,31 @@
 #include "entrada.h"
 #include "eleicao.h"
 
+static int autenticar_administrador(void) {
+    const int senha_administrador = 1234;
+    const char *mensagem = "Digite a senha ou '0' para retornar ao menu: ";
+
+    while (1) {
+        int senha = ler_inteiro(mensagem);
+        limpar_tela();
+
+        if (senha == 0) {
+            printf("Operação cancelada. Retornando ao menu.\n\n");
+            return 0;
+        }
+
+        if (senha == senha_administrador) {
+            return 1;
+        }
+
+        mensagem = "Senha inválida. Digite novamente ou '0' para retornar ao menu: ";
+    }
+}
+
 int main() {
     setlocale(LC_ALL, "Portuguese");
 
-    int opcao_menu, senha = 1234;
+    int opcao_menu;
     int idade[2] = {0, 0};
     Eleicao eleicao = {.vencedor = -1};
     int primeiro = 0, segundo = 0;
@@ -37,16 +58,7 @@ int main() {
             if (eleicao.candidatos_cadastrados == 1) {
                 printf("Já foi feito o cadastro de candidatos.\n\n");
             } else {
-                senha = ler_inteiro("Digite a senha: ");
-                limpar_tela();
-                while (senha != 1234) {
-                    senha = ler_inteiro("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
-                    if (senha == 0) {
-                        break;
-                    }
-                    limpar_tela();
-                }
-                if (senha == 1234) {
+                if (autenticar_administrador()) {
                     eleicao.candidatos_cadastrados = 1;
                     cadastrar_candidatos(&eleicao);
                 } // fim senha
@@ -58,16 +70,7 @@ int main() {
             if (eleicao.votacao_encerrada == 1) {
                 printf("Votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
             } else if (eleicao.candidatos_cadastrados == 1) {
-                senha = ler_inteiro("Digite a senha: ");
-                limpar_tela();
-                while (senha != 1234) {
-                    senha = ler_inteiro("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
-                    if (senha == 0) {
-                        break;
-                    }
-                    limpar_tela();
-                }
-                if (senha == 1234) {
+                if (autenticar_administrador()) {
                     if (eleicao.votacao_iniciada != 1) {
                         printf("-------Qntd. de Eleitores-------\n");
                         printf("[1] + de 200k\n");
@@ -99,16 +102,7 @@ int main() {
                 printf("A votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
             } else {
                 do {
-                    senha = ler_inteiro("Digite a senha: ");
-                    limpar_tela();
-                    while (senha != 1234) {
-                        senha = ler_inteiro("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
-                        if (senha == 0) {
-                            break;
-                        }
-                        limpar_tela();
-                    }
-                    if (senha == 1234) {
+                    if (autenticar_administrador()) {
                         eleicao.votacao_encerrada = 1;
                         calcular_percentuais(&eleicao);
                         printf("Votação encerrada.\n\n");
@@ -141,16 +135,7 @@ int main() {
                 );
             } else {
                 do {
-                    senha = ler_inteiro("Digite a senha: ");
-                    limpar_tela();
-                    while (senha != 1234) {
-                        senha = ler_inteiro("Senha inválida. Digite novamente ou '0' para retornar ao menu: ");
-                        if (senha == 0) {
-                            break;
-                        }
-                        limpar_tela();
-                    }
-                    if (senha == 1234) {
+                    if (autenticar_administrador()) {
                         eleicao.resultado_divulgado = 1;
                         exibir_resultados(&eleicao, eleicao.faixa_eleitores);
 
@@ -290,4 +275,3 @@ int main() {
     }
     return 0;
 }
-
