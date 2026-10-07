@@ -15,8 +15,7 @@
 int main() {
     setlocale(LC_ALL, "Portuguese");
 
-    int opcao_menu, senha = 1234, num_eleitores;
-    int controle[4] = {0, 0, 0, 0};
+    int opcao_menu, senha = 1234;
     int idade[2] = {0, 0};
     Eleicao eleicao = {.vencedor = -1};
     int primeiro = 0, segundo = 0;
@@ -35,7 +34,7 @@ int main() {
         pausar();
         limpar_tela();
         if (opcao_menu == 1) {
-            if (controle[0] == 1) {
+            if (eleicao.candidatos_cadastrados == 1) {
                 printf("Já foi feito o cadastro de candidatos.\n\n");
             } else {
                 senha = ler_inteiro("Digite a senha: ");
@@ -48,7 +47,7 @@ int main() {
                     limpar_tela();
                 }
                 if (senha == 1234) {
-                    controle[0] = 1;
+                    eleicao.candidatos_cadastrados = 1;
                     cadastrar_candidatos(&eleicao);
                 } // fim senha
             } // fim controle
@@ -56,7 +55,7 @@ int main() {
             limpar_tela();
         } // fim if 1
         if (opcao_menu == 2) {
-            if (controle[1] == 1) {
+            if (eleicao.votacao_encerrada == 1) {
                 printf("Votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
             } else if (eleicao.candidatos[3].numero != 0) {
                 senha = ler_inteiro("Digite a senha: ");
@@ -69,20 +68,20 @@ int main() {
                     limpar_tela();
                 }
                 if (senha == 1234) {
-                    if (controle[3] != 1) {
+                    if (eleicao.votacao_iniciada != 1) {
                         printf("-------Qntd. de Eleitores-------\n");
                         printf("[1] + de 200k\n");
                         printf("[2] - de 200k\n");
-                        num_eleitores = ler_inteiro("Digite uma opção: ");
-                        while (num_eleitores != 1 && num_eleitores != 2) {
-                            num_eleitores = ler_inteiro(
+                        eleicao.faixa_eleitores = ler_inteiro("Digite uma opção: ");
+                        while (eleicao.faixa_eleitores != 1 && eleicao.faixa_eleitores != 2) {
+                            eleicao.faixa_eleitores = ler_inteiro(
                                 "Número de eleitores inválido. Digite novamente: "
                             );
                         }
                         pausar();
                         limpar_tela();
                     }
-                    controle[3] = 1;
+                    eleicao.votacao_iniciada = 1;
                     realizar_primeiro_turno(&eleicao);
                 } //fim senha
             } else {
@@ -92,7 +91,7 @@ int main() {
             limpar_tela();
         } // fim do if (opcao_menu == 2)
         if (opcao_menu == 3) {
-            if (controle[1] == 1) {
+            if (eleicao.votacao_encerrada == 1) {
                 printf("A votação já foi encerrada. Compute os votos para saber o ganhador.\n\n");
             } else if (calcular_total_votos(&eleicao) == 0) {
                 printf("Ainda não foi feita a eleição.\n\n");
@@ -108,7 +107,7 @@ int main() {
                         limpar_tela();
                     }
                     if (senha == 1234) {
-                        controle[1] = 1;
+                        eleicao.votacao_encerrada = 1;
                         calcular_percentuais(&eleicao);
                         printf("Votos encerrados.\n\n");
                     } // fim do if senha
@@ -120,7 +119,7 @@ int main() {
             limpar_tela();
         } // fim do if (opcao_menu == 3)
         if (opcao_menu == 4) {
-            if (controle[2] == 1) {
+            if (eleicao.resultado_divulgado == 1) {
                 if (calcular_total_votos_validos(&eleicao) == 0) {
                     printf(
                         "O resultado da eleição já foi divulgado. Não houve votos válidos em candidatos.\n\n"
@@ -134,7 +133,7 @@ int main() {
                 }
             } else if (calcular_total_votos(&eleicao) == 0) {
                 printf("Ainda não foi feita a eleição.\n\n");
-            } else if (controle[1] == 0) {
+            } else if (eleicao.votacao_encerrada == 0) {
                 printf("Ainda não foi feita a contagem de votos.\n\n");
             } else if (eleicao.candidatos[3].numero != 0) {
                 do {
@@ -148,8 +147,8 @@ int main() {
                         limpar_tela();
                     }
                     if (senha == 1234) {
-                        controle[2] = 1;
-                        exibir_resultados(&eleicao, num_eleitores);
+                        eleicao.resultado_divulgado = 1;
+                        exibir_resultados(&eleicao, eleicao.faixa_eleitores);
 
                         if (calcular_total_votos_validos(&eleicao) == 0) {
                             printf(
@@ -160,7 +159,7 @@ int main() {
 
                         identificar_primeiro_segundo(&eleicao, &primeiro, &segundo);
 
-                        if (num_eleitores == 2) {
+                        if (eleicao.faixa_eleitores == 2) {
                             int empatados[TOTAL_CANDIDATOS];
                             int quantidade_empatados = identificar_empatados_na_lideranca(
                                 &eleicao,
@@ -184,7 +183,7 @@ int main() {
                                     primeiro = vencedor;
                                     eleicao.vencedor = vencedor;
                                 } else {
-                                    controle[2] = 0;
+                                    eleicao.resultado_divulgado = 0;
                                 }
                             } else {
                                 primeiro = empatados[0];
@@ -208,7 +207,7 @@ int main() {
                                         &primeiro,
                                         &segundo
                                     )) {
-                                    controle[2] = 0;
+                                    eleicao.resultado_divulgado = 0;
                                     break;
                                 }
 
@@ -229,7 +228,7 @@ int main() {
                                     printf(
                                         "\nNão houve votos válidos no 2° turno. Não é possível determinar um vencedor.\n"
                                     );
-                                    controle[2] = 0;
+                                    eleicao.resultado_divulgado = 0;
                                     break;
                                 }
 
@@ -268,7 +267,7 @@ int main() {
                                         primeiro = vencedor;
                                         eleicao.vencedor = vencedor;
                                     } else {
-                                        controle[2] = 0;
+                                        eleicao.resultado_divulgado = 0;
                                     }
                                 }
                                 /*printf("Fim do programa.\n");
