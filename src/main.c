@@ -57,7 +57,7 @@ int main() {
         if (opcao_menu == 2) {
             if (eleicao.votacao_encerrada == 1) {
                 printf("Votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
-            } else if (eleicao.candidatos[3].numero != 0) {
+            } else if (eleicao.candidatos_cadastrados == 1) {
                 senha = ler_inteiro("Digite a senha: ");
                 limpar_tela();
                 while (senha != 1234) {
@@ -91,11 +91,13 @@ int main() {
             limpar_tela();
         } // fim do if (opcao_menu == 2)
         if (opcao_menu == 3) {
-            if (eleicao.votacao_encerrada == 1) {
-                printf("A votação já foi encerrada. Compute os votos para saber o ganhador.\n\n");
-            } else if (calcular_total_votos(&eleicao) == 0) {
-                printf("Ainda não foi feita a eleição.\n\n");
-            } else if (eleicao.candidatos[3].numero != 0) {
+            if (eleicao.candidatos_cadastrados == 0) {
+                printf("Ainda não foram cadastrados candidatos.\n\n");
+            } else if (eleicao.votacao_iniciada == 0) {
+                printf("A votação ainda não foi iniciada.\n\n");
+            } else if (eleicao.votacao_encerrada == 1) {
+                printf("A votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
+            } else {
                 do {
                     senha = ler_inteiro("Digite a senha: ");
                     limpar_tela();
@@ -109,12 +111,10 @@ int main() {
                     if (senha == 1234) {
                         eleicao.votacao_encerrada = 1;
                         calcular_percentuais(&eleicao);
-                        printf("Votos encerrados.\n\n");
+                        printf("Votação encerrada.\n\n");
                     } // fim do if senha
-                } while (0); // fim do "do" caso o numero_candidato[3] seja != 0
-            } else {
-                printf("Ainda não foram cadastrados candidatos. \n\n");
-            } // fim do if (numero_candidato[3] != 0)
+                } while (0);
+            }
             pausar();
             limpar_tela();
         } // fim do if (opcao_menu == 3)
@@ -131,11 +131,15 @@ int main() {
                         eleicao.candidatos[eleicao.vencedor].numero
                     );
                 }
-            } else if (calcular_total_votos(&eleicao) == 0) {
-                printf("Ainda não foi feita a eleição.\n\n");
+            } else if (eleicao.candidatos_cadastrados == 0) {
+                printf("Ainda não foram cadastrados candidatos.\n\n");
+            } else if (eleicao.votacao_iniciada == 0) {
+                printf("A votação ainda não foi iniciada.\n\n");
             } else if (eleicao.votacao_encerrada == 0) {
-                printf("Ainda não foi feita a contagem de votos.\n\n");
-            } else if (eleicao.candidatos[3].numero != 0) {
+                printf(
+                    "A votação ainda não foi encerrada. Encerre a votação antes de computar os votos.\n\n"
+                );
+            } else {
                 do {
                     senha = ler_inteiro("Digite a senha: ");
                     limpar_tela();
@@ -275,10 +279,8 @@ int main() {
                             }
                         } // fim do if resultado da votação
                     } // fim do if
-                } while (0); // fim do "do" caso o numero_candidato[3] seja != 0
-            } else {
-                printf("Ainda não foram cadastrados candidatos. \n\n");
-            } // fim do if (numero_candidato[3] != 0)
+                } while (0);
+            }
             pausar();
             limpar_tela();
         } // fim do if (opcao_menu == 4)
@@ -288,3 +290,4 @@ int main() {
     }
     return 0;
 }
+
