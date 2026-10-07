@@ -33,6 +33,84 @@ static int autenticar_administrador(void) {
     }
 }
 
+static void apurar_segundo_turno(
+    Eleicao *eleicao,
+    int primeiro,
+    int segundo
+) {
+    int total_votos_validos =
+        eleicao->votos_segundo_turno[primeiro] +
+        eleicao->votos_segundo_turno[segundo];
+
+    if (total_votos_validos == 0) {
+        printf(
+            "\nNão houve votos válidos no 2° turno. "
+            "Não é possível determinar um vencedor.\n"
+        );
+        eleicao->apuracao_inconclusiva = 1;
+        return;
+    }
+
+    if (eleicao->votos_segundo_turno[primeiro] >
+        eleicao->votos_segundo_turno[segundo]) {
+        eleicao->vencedor = primeiro;
+        eleicao->resultado_divulgado = 1;
+        eleicao->apuracao_inconclusiva = 0;
+        eleicao->empate_final = 0;
+
+        printf(
+            "O candidato(a) %s venceu o 2° turno com %d votos.\n",
+            eleicao->candidatos[primeiro].nome,
+            eleicao->votos_segundo_turno[primeiro]
+        );
+        return;
+    }
+
+    if (eleicao->votos_segundo_turno[segundo] >
+        eleicao->votos_segundo_turno[primeiro]) {
+        eleicao->vencedor = segundo;
+        eleicao->resultado_divulgado = 1;
+        eleicao->apuracao_inconclusiva = 0;
+        eleicao->empate_final = 0;
+
+        printf(
+            "O candidato(a) %s venceu o 2° turno com %d votos.\n",
+            eleicao->candidatos[segundo].nome,
+            eleicao->votos_segundo_turno[segundo]
+        );
+        return;
+    }
+
+    printf(
+        "\nEmpate. O desempate ocorrerá por idade entre os candidatos %s e %s.\n\n",
+        eleicao->candidatos[primeiro].nome,
+        eleicao->candidatos[segundo].nome
+    );
+
+    pausar();
+    limpar_tela();
+
+    int empatados[2] = {primeiro, segundo};
+    int vencedor = desempatar_por_idade(eleicao, empatados, 2);
+
+    if (vencedor >= 0) {
+        eleicao->vencedor = vencedor;
+        eleicao->resultado_divulgado = 1;
+        eleicao->apuracao_inconclusiva = 0;
+        eleicao->empate_final = 0;
+    } else {
+        eleicao->vencedor = -1;
+        eleicao->resultado_divulgado = 1;
+        eleicao->apuracao_inconclusiva = 0;
+        eleicao->empate_final = 1;
+
+        printf(
+            "\nA eleição terminou empatada. "
+            "Não foi possível definir um vencedor pelos critérios disponíveis.\n"
+        );
+    }
+}
+
 int main() {
     setlocale(LC_ALL, "Portuguese");
 
@@ -70,6 +148,11 @@ int main() {
             if (eleicao.votacao_encerrada == 1) {
                 if (eleicao.resultado_divulgado == 1) {
                     printf("A votação já foi encerrada e o resultado já foi divulgado.\n\n");
+                } else if (eleicao.apuracao_inconclusiva == 1) {
+                    printf(
+                        "A votação já foi encerrada, mas a apuração permanece inconclusiva.\n"
+                        "Use a opção 4 para tentar concluir a apuração novamente.\n\n"
+                    );
                 } else {
                     printf("A votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
                 }
@@ -105,6 +188,11 @@ int main() {
             } else if (eleicao.votacao_encerrada == 1) {
                 if (eleicao.resultado_divulgado == 1) {
                     printf("A votação já foi encerrada e o resultado já foi divulgado.\n\n");
+                } else if (eleicao.apuracao_inconclusiva == 1) {
+                    printf(
+                        "A votação já foi encerrada, mas a apuração permanece inconclusiva.\n"
+                        "Use a opção 4 para tentar concluir a apuração novamente.\n\n"
+                    );
                 } else {
                     printf("A votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
                 }
@@ -126,6 +214,12 @@ int main() {
                     printf(
                         "O resultado da eleição já foi divulgado. Não houve votos válidos em candidatos.\n\n"
                     );
+                } else if (eleicao.empate_final == 1) {
+                    printf(
+                        "O resultado da eleição já foi divulgado. "
+                        "A eleição terminou empatada e não foi possível definir um vencedor "
+                        "pelos critérios disponíveis.\n\n"
+                    );
                 } else {
                     printf(
                         "O resultado da eleição já foi divulgado. O candidato(a) %s[%d] ganhou.\n\n",
@@ -144,6 +238,19 @@ int main() {
             } else {
                 do {
                     if (autenticar_administrador()) {
+                        eleicao.apuracao_inconclusiva = 0;
+
+                        if (eleicao.segundo_turno_realizado == 1) {
+                            printf("Retomando a apuração do 2° turno.\n\n");
+
+                            apurar_segundo_turno(
+                                &eleicao,
+                                eleicao.finalista_primeiro,
+                                eleicao.finalista_segundo
+                            );
+                            break;
+                        }
+
                         exibir_resultados(&eleicao, eleicao.faixa_eleitores);
 
                         if (calcular_total_votos_validos(&eleicao) == 0) {
@@ -180,6 +287,17 @@ int main() {
                                     primeiro = vencedor;
                                     eleicao.vencedor = vencedor;
                                     eleicao.resultado_divulgado = 1;
+                                    eleicao.empate_final = 0;
+                                } else {
+                                    eleicao.vencedor = -1;
+                                    eleicao.resultado_divulgado = 1;
+                                    eleicao.apuracao_inconclusiva = 0;
+                                    eleicao.empate_final = 1;
+
+                                    printf(
+                                        "\nA eleição terminou empatada. "
+                                        "Não foi possível definir um vencedor pelos critérios disponíveis.\n"
+                                    );
                                 }
                             } else {
                                 primeiro = empatados[0];
@@ -205,6 +323,16 @@ int main() {
                                         &primeiro,
                                         &segundo
                                     )) {
+                                    eleicao.vencedor = -1;
+                                    eleicao.resultado_divulgado = 1;
+                                    eleicao.apuracao_inconclusiva = 0;
+                                    eleicao.empate_final = 1;
+
+                                    printf(
+                                        "\nA eleição terminou empatada. "
+                                        "Não foi possível definir os finalistas "
+                                        "pelos critérios disponíveis.\n"
+                                    );
                                     break;
                                 }
 
@@ -215,61 +343,18 @@ int main() {
                                 );
                                 pausar();
                                 limpar_tela();
+
+                                eleicao.finalista_primeiro = primeiro;
+                                eleicao.finalista_segundo = segundo;
+
                                 realizar_segundo_turno(&eleicao, primeiro, segundo);
+                                eleicao.segundo_turno_realizado = 1;
 
-                                int total_votos_validos_segundo_turno =
-                                    eleicao.votos_segundo_turno[primeiro] +
-                                    eleicao.votos_segundo_turno[segundo];
-
-                                if (total_votos_validos_segundo_turno == 0) {
-                                    printf(
-                                        "\nNão houve votos válidos no 2° turno. Não é possível determinar um vencedor.\n"
-                                    );
-                                    break;
-                                }
-
-                                //verificação segundo turno
-                                if (eleicao.votos_segundo_turno[primeiro] > eleicao.votos_segundo_turno[segundo]) {
-                                    eleicao.vencedor = primeiro;
-                                    eleicao.resultado_divulgado = 1;
-                                    printf(
-                                        "O candidato(a) %s venceu o 2° turno com %d votos.\n",
-                                        eleicao.candidatos[primeiro].nome,
-                                        eleicao.votos_segundo_turno[primeiro]
-                                    );
-                                } else if (eleicao.votos_segundo_turno[segundo] > eleicao.votos_segundo_turno[primeiro]) {
-                                    eleicao.vencedor = segundo;
-                                    eleicao.resultado_divulgado = 1;
-                                    printf(
-                                        "O candidato(a) %s venceu o 2° turno com %d votos.\n",
-                                        eleicao.candidatos[segundo].nome,
-                                        eleicao.votos_segundo_turno[segundo]
-                                    );
-                                } else if (eleicao.votos_segundo_turno[primeiro] == eleicao.votos_segundo_turno[segundo]) {
-                                    printf(
-                                        "\nEmpate. Desempate ocorrerá entre os candidatos %s e %s no formato (dd/mm/aaaa). \n",
-                                        eleicao.candidatos[primeiro].nome,
-                                        eleicao.candidatos[segundo].nome
-                                    );
-                                    pausar();
-                                    limpar_tela();
-
-                                    int empatados_segundo_turno[2] = {primeiro, segundo};
-                                    int vencedor = desempatar_por_idade(
-                                        &eleicao,
-                                        empatados_segundo_turno,
-                                        2
-                                    );
-
-                                    if (vencedor >= 0) {
-                                        primeiro = vencedor;
-                                        eleicao.vencedor = vencedor;
-                                        eleicao.resultado_divulgado = 1;
-                                    }
-                                }
-                                /*printf("Fim do programa.\n");
-                                return 0;*/
-                            }
+                                apurar_segundo_turno(
+                                    &eleicao,
+                                    primeiro,
+                                    segundo
+                                );                            }
                         } // fim do if resultado da votação
                     } // fim do if
                 } while (0);
