@@ -68,7 +68,11 @@ int main() {
         } // fim if 1
         if (opcao_menu == 2) {
             if (eleicao.votacao_encerrada == 1) {
-                printf("Votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
+                if (eleicao.resultado_divulgado == 1) {
+                    printf("A votação já foi encerrada e o resultado já foi divulgado.\n\n");
+                } else {
+                    printf("A votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
+                }
             } else if (eleicao.candidatos_cadastrados == 1) {
                 if (autenticar_administrador()) {
                     if (eleicao.votacao_iniciada != 1) {
@@ -99,7 +103,11 @@ int main() {
             } else if (eleicao.votacao_iniciada == 0) {
                 printf("A votação ainda não foi iniciada.\n\n");
             } else if (eleicao.votacao_encerrada == 1) {
-                printf("A votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
+                if (eleicao.resultado_divulgado == 1) {
+                    printf("A votação já foi encerrada e o resultado já foi divulgado.\n\n");
+                } else {
+                    printf("A votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
+                }
             } else {
                 do {
                     if (autenticar_administrador()) {

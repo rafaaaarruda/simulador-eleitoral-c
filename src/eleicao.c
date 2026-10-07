@@ -117,7 +117,7 @@ void realizar_primeiro_turno(Eleicao *eleicao) {
         }
 
         if (voto == 100) {
-            printf("\nFim da votação.\n\n");
+            printf("\nRetornando ao menu. A votação permanece aberta.\n\n");
         } else if (voto == 1) {
             int confirmado = solicitar_confirmacao_voto(
                 "\nVocê está votando Branco. Digite 1 para confirmar ou 0 para cancelar: "
