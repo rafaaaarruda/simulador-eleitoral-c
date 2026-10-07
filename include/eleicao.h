@@ -20,6 +20,13 @@ typedef struct {
     int votos_segundo_turno[TOTAL_CANDIDATOS];
     int votos_nulos_segundo_turno;
     int votos_brancos_segundo_turno;
+    int candidatos_cadastrados;
+    int votacao_iniciada;
+    int votacao_encerrada;
+    int resultado_divulgado;
+    int empate_final;
+    int sem_vencedor;
+    int faixa_eleitores;
     int vencedor;
 } Eleicao;
 
