@@ -136,13 +136,13 @@ int main() {
             } else {
                 do {
                     if (autenticar_administrador()) {
-                        eleicao.resultado_divulgado = 1;
                         exibir_resultados(&eleicao, eleicao.faixa_eleitores);
 
                         if (calcular_total_votos_validos(&eleicao) == 0) {
                             printf(
                                 "\nNão houve votos válidos em candidatos. Não é possível determinar um vencedor.\n"
                             );
+                            eleicao.resultado_divulgado = 1;
                             break;
                         }
 
@@ -171,12 +171,12 @@ int main() {
                                 if (vencedor >= 0) {
                                     primeiro = vencedor;
                                     eleicao.vencedor = vencedor;
-                                } else {
-                                    eleicao.resultado_divulgado = 0;
+                                    eleicao.resultado_divulgado = 1;
                                 }
                             } else {
                                 primeiro = empatados[0];
                                 eleicao.vencedor = primeiro;
+                                eleicao.resultado_divulgado = 1;
                                 printf(
                                     "O candidato(a) %s venceu o 1° turno.\n",
                                     eleicao.candidatos[primeiro].nome
@@ -185,6 +185,7 @@ int main() {
                         } else { // cidade tem mais de 200k eleitores
                             if (eleicao.candidatos[primeiro].percentual > 50.0) { // if resultado da votação
                                 eleicao.vencedor = primeiro;
+                                eleicao.resultado_divulgado = 1;
                                 printf(
                                     "O candidato(a) %s venceu o 1° turno com %.2f%% dos votos válidos.\n",
                                     eleicao.candidatos[primeiro].nome,
@@ -196,7 +197,6 @@ int main() {
                                         &primeiro,
                                         &segundo
                                     )) {
-                                    eleicao.resultado_divulgado = 0;
                                     break;
                                 }
 
@@ -217,13 +217,13 @@ int main() {
                                     printf(
                                         "\nNão houve votos válidos no 2° turno. Não é possível determinar um vencedor.\n"
                                     );
-                                    eleicao.resultado_divulgado = 0;
                                     break;
                                 }
 
                                 //verificação segundo turno
                                 if (eleicao.votos_segundo_turno[primeiro] > eleicao.votos_segundo_turno[segundo]) {
                                     eleicao.vencedor = primeiro;
+                                    eleicao.resultado_divulgado = 1;
                                     printf(
                                         "O candidato(a) %s venceu o 2° turno com %d votos.\n",
                                         eleicao.candidatos[primeiro].nome,
@@ -231,6 +231,7 @@ int main() {
                                     );
                                 } else if (eleicao.votos_segundo_turno[segundo] > eleicao.votos_segundo_turno[primeiro]) {
                                     eleicao.vencedor = segundo;
+                                    eleicao.resultado_divulgado = 1;
                                     printf(
                                         "O candidato(a) %s venceu o 2° turno com %d votos.\n",
                                         eleicao.candidatos[segundo].nome,
@@ -255,8 +256,7 @@ int main() {
                                     if (vencedor >= 0) {
                                         primeiro = vencedor;
                                         eleicao.vencedor = vencedor;
-                                    } else {
-                                        eleicao.resultado_divulgado = 0;
+                                        eleicao.resultado_divulgado = 1;
                                     }
                                 }
                                 /*printf("Fim do programa.\n");
