@@ -50,7 +50,6 @@ static void apurar_segundo_turno(
 
         eleicao->vencedor = -1;
         eleicao->resultado_divulgado = 1;
-        eleicao->apuracao_inconclusiva = 0;
         eleicao->empate_final = 0;
         eleicao->sem_vencedor = 1;
         return;
@@ -60,7 +59,6 @@ static void apurar_segundo_turno(
         eleicao->votos_segundo_turno[segundo]) {
         eleicao->vencedor = primeiro;
         eleicao->resultado_divulgado = 1;
-        eleicao->apuracao_inconclusiva = 0;
         eleicao->empate_final = 0;
         eleicao->sem_vencedor = 0;
 
@@ -76,7 +74,6 @@ static void apurar_segundo_turno(
         eleicao->votos_segundo_turno[primeiro]) {
         eleicao->vencedor = segundo;
         eleicao->resultado_divulgado = 1;
-        eleicao->apuracao_inconclusiva = 0;
         eleicao->empate_final = 0;
         eleicao->sem_vencedor = 0;
 
@@ -103,13 +100,11 @@ static void apurar_segundo_turno(
     if (vencedor >= 0) {
         eleicao->vencedor = vencedor;
         eleicao->resultado_divulgado = 1;
-        eleicao->apuracao_inconclusiva = 0;
         eleicao->empate_final = 0;
         eleicao->sem_vencedor = 0;
     } else {
         eleicao->vencedor = -1;
         eleicao->resultado_divulgado = 1;
-        eleicao->apuracao_inconclusiva = 0;
         eleicao->empate_final = 1;
         eleicao->sem_vencedor = 0;
 
@@ -157,11 +152,6 @@ int main() {
             if (eleicao.votacao_encerrada == 1) {
                 if (eleicao.resultado_divulgado == 1) {
                     printf("A votação já foi encerrada e o resultado já foi divulgado.\n\n");
-                } else if (eleicao.apuracao_inconclusiva == 1) {
-                    printf(
-                        "A votação já foi encerrada, mas a apuração permanece inconclusiva.\n"
-                        "Use a opção 4 para tentar concluir a apuração novamente.\n\n"
-                    );
                 } else {
                     printf("A votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
                 }
@@ -197,11 +187,6 @@ int main() {
             } else if (eleicao.votacao_encerrada == 1) {
                 if (eleicao.resultado_divulgado == 1) {
                     printf("A votação já foi encerrada e o resultado já foi divulgado.\n\n");
-                } else if (eleicao.apuracao_inconclusiva == 1) {
-                    printf(
-                        "A votação já foi encerrada, mas a apuração permanece inconclusiva.\n"
-                        "Use a opção 4 para tentar concluir a apuração novamente.\n\n"
-                    );
                 } else {
                     printf("A votação já foi encerrada. Compute os votos para saber o vencedor.\n\n");
                 }
@@ -248,18 +233,6 @@ int main() {
             } else {
                 do {
                     if (autenticar_administrador()) {
-                        eleicao.apuracao_inconclusiva = 0;
-
-                        if (eleicao.segundo_turno_realizado == 1) {
-                            printf("Retomando a apuração do 2° turno.\n\n");
-
-                            apurar_segundo_turno(
-                                &eleicao,
-                                eleicao.finalista_primeiro,
-                                eleicao.finalista_segundo
-                            );
-                            break;
-                        }
 
                         exibir_resultados(&eleicao, eleicao.faixa_eleitores);
 
@@ -271,7 +244,6 @@ int main() {
 
                             eleicao.vencedor = -1;
                             eleicao.resultado_divulgado = 1;
-                            eleicao.apuracao_inconclusiva = 0;
                             eleicao.empate_final = 0;
                             eleicao.sem_vencedor = 1;
                             break;
@@ -308,7 +280,6 @@ int main() {
                                 } else {
                                     eleicao.vencedor = -1;
                                     eleicao.resultado_divulgado = 1;
-                                    eleicao.apuracao_inconclusiva = 0;
                                     eleicao.empate_final = 1;
                                     eleicao.sem_vencedor = 0;
 
@@ -344,7 +315,6 @@ int main() {
                                     )) {
                                     eleicao.vencedor = -1;
                                     eleicao.resultado_divulgado = 1;
-                                    eleicao.apuracao_inconclusiva = 0;
                                     eleicao.empate_final = 1;
                                     eleicao.sem_vencedor = 0;
 
@@ -364,17 +334,13 @@ int main() {
                                 pausar();
                                 limpar_tela();
 
-                                eleicao.finalista_primeiro = primeiro;
-                                eleicao.finalista_segundo = segundo;
-
                                 realizar_segundo_turno(&eleicao, primeiro, segundo);
-                                eleicao.segundo_turno_realizado = 1;
-
                                 apurar_segundo_turno(
                                     &eleicao,
                                     primeiro,
                                     segundo
-                                );                            }
+                                );
+                            }
                         } // fim do if resultado da votação
                     } // fim do if
                 } while (0);
