@@ -45,9 +45,14 @@ static void apurar_segundo_turno(
     if (total_votos_validos == 0) {
         printf(
             "\nNão houve votos válidos no 2° turno. "
-            "Não é possível determinar um vencedor.\n"
+            "A eleição terminou sem vencedor.\n"
         );
-        eleicao->apuracao_inconclusiva = 1;
+
+        eleicao->vencedor = -1;
+        eleicao->resultado_divulgado = 1;
+        eleicao->apuracao_inconclusiva = 0;
+        eleicao->empate_final = 0;
+        eleicao->sem_vencedor = 1;
         return;
     }
 
@@ -57,6 +62,7 @@ static void apurar_segundo_turno(
         eleicao->resultado_divulgado = 1;
         eleicao->apuracao_inconclusiva = 0;
         eleicao->empate_final = 0;
+        eleicao->sem_vencedor = 0;
 
         printf(
             "O candidato(a) %s venceu o 2° turno com %d votos.\n",
@@ -72,6 +78,7 @@ static void apurar_segundo_turno(
         eleicao->resultado_divulgado = 1;
         eleicao->apuracao_inconclusiva = 0;
         eleicao->empate_final = 0;
+        eleicao->sem_vencedor = 0;
 
         printf(
             "O candidato(a) %s venceu o 2° turno com %d votos.\n",
@@ -98,11 +105,13 @@ static void apurar_segundo_turno(
         eleicao->resultado_divulgado = 1;
         eleicao->apuracao_inconclusiva = 0;
         eleicao->empate_final = 0;
+        eleicao->sem_vencedor = 0;
     } else {
         eleicao->vencedor = -1;
         eleicao->resultado_divulgado = 1;
         eleicao->apuracao_inconclusiva = 0;
         eleicao->empate_final = 1;
+        eleicao->sem_vencedor = 0;
 
         printf(
             "\nA eleição terminou empatada. "
@@ -210,9 +219,10 @@ int main() {
         } // fim do if (opcao_menu == 3)
         if (opcao_menu == 4) {
             if (eleicao.resultado_divulgado == 1) {
-                if (calcular_total_votos_validos(&eleicao) == 0) {
+                if (eleicao.sem_vencedor == 1) {
                     printf(
-                        "O resultado da eleição já foi divulgado. Não houve votos válidos em candidatos.\n\n"
+                        "O resultado da eleição já foi divulgado. "
+                        "A eleição terminou sem vencedor.\n\n"
                     );
                 } else if (eleicao.empate_final == 1) {
                     printf(
@@ -255,9 +265,15 @@ int main() {
 
                         if (calcular_total_votos_validos(&eleicao) == 0) {
                             printf(
-                                "\nNão houve votos válidos em candidatos. Não é possível determinar um vencedor.\n"
+                                "\nNão houve votos válidos em candidatos. "
+                                "A eleição terminou sem vencedor.\n"
                             );
+
+                            eleicao.vencedor = -1;
                             eleicao.resultado_divulgado = 1;
+                            eleicao.apuracao_inconclusiva = 0;
+                            eleicao.empate_final = 0;
+                            eleicao.sem_vencedor = 1;
                             break;
                         }
 
@@ -288,11 +304,13 @@ int main() {
                                     eleicao.vencedor = vencedor;
                                     eleicao.resultado_divulgado = 1;
                                     eleicao.empate_final = 0;
+                                    eleicao.sem_vencedor = 0;
                                 } else {
                                     eleicao.vencedor = -1;
                                     eleicao.resultado_divulgado = 1;
                                     eleicao.apuracao_inconclusiva = 0;
                                     eleicao.empate_final = 1;
+                                    eleicao.sem_vencedor = 0;
 
                                     printf(
                                         "\nA eleição terminou empatada. "
@@ -303,6 +321,7 @@ int main() {
                                 primeiro = empatados[0];
                                 eleicao.vencedor = primeiro;
                                 eleicao.resultado_divulgado = 1;
+                                eleicao.sem_vencedor = 0;
                                 printf(
                                     "O candidato(a) %s venceu o 1° turno.\n",
                                     eleicao.candidatos[primeiro].nome
@@ -327,6 +346,7 @@ int main() {
                                     eleicao.resultado_divulgado = 1;
                                     eleicao.apuracao_inconclusiva = 0;
                                     eleicao.empate_final = 1;
+                                    eleicao.sem_vencedor = 0;
 
                                     printf(
                                         "\nA eleição terminou empatada. "

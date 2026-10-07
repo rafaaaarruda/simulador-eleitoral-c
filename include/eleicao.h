@@ -26,6 +26,7 @@ typedef struct {
     int resultado_divulgado;
     int apuracao_inconclusiva;
     int empate_final;
+    int sem_vencedor;
     int segundo_turno_realizado;
     int finalista_primeiro;
     int finalista_segundo;
