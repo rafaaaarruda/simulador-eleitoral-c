@@ -13,10 +13,11 @@ void limpar_tela(void) {
 }
 
 void pausar(void) {
-#ifdef _WIN32
-    system("pause");
-#else
+    int caractere;
+
     printf("Pressione Enter para continuar...");
-    getchar();
-#endif
+    fflush(stdout);
+
+    while ((caractere = getchar()) != '\n' && caractere != EOF) {
+    }
 }

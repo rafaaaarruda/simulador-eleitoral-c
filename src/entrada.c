@@ -7,6 +7,31 @@
 
 #include "entrada.h"
 
+static int ler_linha(char *buffer, int tamanho) {
+    if (fgets(buffer, tamanho, stdin) == NULL) {
+        return -1;
+    }
+
+    size_t comprimento = strlen(buffer);
+
+    if (comprimento > 0 && buffer[comprimento - 1] == '\n') {
+        buffer[comprimento - 1] = '\0';
+        return 1;
+    }
+
+    int caractere = getchar();
+
+    if (caractere == '\n' || caractere == EOF) {
+        return 1;
+    }
+
+    while (caractere != '\n' && caractere != EOF) {
+        caractere = getchar();
+    }
+
+    return 0;
+}
+
 int ler_inteiro(const char *mensagem) {
     char buffer[100];
     char *fim;
@@ -15,9 +40,16 @@ int ler_inteiro(const char *mensagem) {
     while (1) {
         printf("%s", mensagem);
 
-        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+        int status = ler_linha(buffer, sizeof(buffer));
+
+        if (status == -1) {
             printf("\nEntrada encerrada.\n");
             exit(EXIT_FAILURE);
+        }
+
+        if (status == 0) {
+            printf("Entrada muito longa. Digite um número inteiro válido.\n");
+            continue;
         }
 
         errno = 0;
@@ -50,12 +82,20 @@ void ler_nome(const char *mensagem, char *nome, int tamanho) {
     while (1) {
         printf("%s", mensagem);
 
-        if (fgets(nome, tamanho, stdin) == NULL) {
+        int status = ler_linha(nome, tamanho);
+
+        if (status == -1) {
             printf("\nEntrada encerrada.\n");
             exit(EXIT_FAILURE);
         }
 
-        nome[strcspn(nome, "\n")] = '\0';
+        if (status == 0) {
+            printf(
+                "Nome muito longo. Use no máximo %d caracteres.\n",
+                tamanho - 1
+            );
+            continue;
+        }
 
         int valido = 1;
         int tem_letra = 0;
@@ -113,12 +153,17 @@ void ler_data(const char *mensagem, int *dia, int *mes, int *ano) {
     while (1) {
         printf("%s", mensagem);
 
-        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+        int status = ler_linha(buffer, sizeof(buffer));
+
+        if (status == -1) {
             printf("\nEntrada encerrada.\n");
             exit(EXIT_FAILURE);
         }
 
-        buffer[strcspn(buffer, "\n")] = '\0';
+        if (status == 0) {
+            printf("Data inválida. Use o formato dd/mm/aaaa.\n");
+            continue;
+        }
 
         if (strlen(buffer) != 10 ||
             buffer[2] != '/' ||
