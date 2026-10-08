@@ -5,8 +5,6 @@
 
 #include <stdio.h>
 #include <locale.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "terminal.h"
 #include "entrada.h"
@@ -142,11 +140,11 @@ int main(void) {
                 if (autenticar_administrador()) {
                     eleicao.candidatos_cadastrados = 1;
                     cadastrar_candidatos(&eleicao);
-                } // fim senha
-            } // fim controle
+                }
+            }
             pausar();
             limpar_tela();
-        } // fim if 1
+        }
         if (opcao_menu == 2) {
             if (eleicao.votacao_encerrada == 1) {
                 if (eleicao.resultado_divulgado == 1) {
@@ -171,13 +169,13 @@ int main(void) {
                     }
                     eleicao.votacao_iniciada = 1;
                     realizar_primeiro_turno(&eleicao);
-                } //fim senha
+                }
             } else {
-                printf("Ainda não foram cadastrados candidatos. \n\n");
-            } // fim do if (numero_candidato[3] != 0)
+                printf("Ainda não foram cadastrados candidatos.\n\n");
+            }
             pausar();
             limpar_tela();
-        } // fim do if (opcao_menu == 2)
+        }
         if (opcao_menu == 3) {
             if (eleicao.candidatos_cadastrados == 0) {
                 printf("Ainda não foram cadastrados candidatos.\n\n");
@@ -195,12 +193,12 @@ int main(void) {
                         eleicao.votacao_encerrada = 1;
                         calcular_percentuais(&eleicao);
                         printf("Votação encerrada.\n\n");
-                    } // fim do if senha
+                    }
                 } while (0);
             }
             pausar();
             limpar_tela();
-        } // fim do if (opcao_menu == 3)
+        }
         if (opcao_menu == 4) {
             if (eleicao.resultado_divulgado == 1) {
                 if (eleicao.sem_vencedor == 1) {
@@ -232,7 +230,6 @@ int main(void) {
             } else {
                 do {
                     if (autenticar_administrador()) {
-
                         exibir_resultados(&eleicao, eleicao.faixa_eleitores);
 
                         if (calcular_total_votos_validos(&eleicao) == 0) {
@@ -297,8 +294,8 @@ int main(void) {
                                     eleicao.candidatos[primeiro].nome
                                 );
                             }
-                        } else { // cidade tem mais de 200k eleitores
-                            if (eleicao.candidatos[primeiro].percentual > 50.0) { // if resultado da votação
+                        } else {
+                            if (eleicao.candidatos[primeiro].percentual > 50.0) {
                                 eleicao.vencedor = primeiro;
                                 eleicao.resultado_divulgado = 1;
                                 printf(
@@ -340,13 +337,13 @@ int main(void) {
                                     segundo
                                 );
                             }
-                        } // fim do if resultado da votação
-                    } // fim do if
+                        }
+                    }
                 } while (0);
             }
             pausar();
             limpar_tela();
-        } // fim do if (opcao_menu == 4)
+        }
     } while (opcao_menu != 5);
     if (opcao_menu == 5) {
         printf("Fim do programa.\n");
