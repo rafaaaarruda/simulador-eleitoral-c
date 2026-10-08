@@ -115,11 +115,10 @@ static void apurar_segundo_turno(
     }
 }
 
-int main() {
+int main(void) {
     setlocale(LC_ALL, "Portuguese");
 
     int opcao_menu;
-    int idade[2] = {0, 0};
     Eleicao eleicao = {.vencedor = -1};
     int primeiro = 0, segundo = 0;
 
